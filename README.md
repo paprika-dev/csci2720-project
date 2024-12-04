@@ -1,4 +1,16 @@
-step 1: npm install
-step 2: npm run download_pkgs
-step 3 (dev): npm run dev
-step 3 (prod): npm run start
+# CSCI2720 Project
+
+This is the project of location web app created by Group 20. 
+
+## Stack
+- Frontend: React + Vite
+- Backend: Node.js (Express)
+- Database: MongoDB
+
+### Start the Application
+At the root directory (csci3100-project)
+- `npm install`, `npm run download_pkgs`to install dependencies
+- `npm run dev` for developement
+- `npm run start` for production
+
+The client will be running at `http://localhost:5173` and the server will be running at `http://localhost:8080`.
