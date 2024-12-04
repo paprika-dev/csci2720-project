@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "concurrently \"cd client && npm run dev\" \"cd server && npm run start\" ",
     "dev": "concurrently \"cd client && npm run dev\" \"cd server && npm run dev\" ",
-    "install": "concurrently \"cd client && npm run install\" \"cd server && npm run install\" "
+    "download_pkgs": "concurrently \"cd client && npm install\" \"cd server && npm install\" "
   },
   "author": "",
   "license": "ISC",
