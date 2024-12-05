@@ -15,6 +15,7 @@ export const MyNavbar = () => {
                 <Nav className="me-auto">
                     <Nav.Link as={Link} to="/locations">Locations</Nav.Link>
                     <Nav.Link as={Link} to="/events">Events</Nav.Link>
+                    <Nav.Link as={Link} to="/favourites">Favourites</Nav.Link>
                 </Nav>
             </Navbar.Collapse>
         </Navbar>

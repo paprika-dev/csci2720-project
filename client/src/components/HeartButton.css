@@ -1,0 +1,23 @@
+button {
+    padding: none;
+    border: none;
+    background: none;
+}
+
+@keyframes heartbeat {
+    0% {
+      transform: scale(1);
+    }
+  
+    50% {
+      transform: scale(1.25);
+    }
+  
+    100% {
+      transform: scale(1);
+    }
+  }
+
+.beat {
+    animation: heartbeat 0.5s;
+}
