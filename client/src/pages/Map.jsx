@@ -4,9 +4,9 @@ import { PoiMarkers } from '../components/Pin';
 export const LocationMap = () => {
 
     const POIs = [
-        {key: 'Sha Tin Town Hall (Auditorium)', location: { lat: 22.38136, lng: 114.1899  }},
-        {key: 'Hong Kong Film Archive (Cinema)', location: { lat: 22.285056, lng: 114.222075  }},
-        {key: 'Kwai Tsing Theatre (Black Box Theatre)', location: { lat: 22.35665, lng: 114.12623 }},
+        {id: 1, name: 'Sha Tin Town Hall (Auditorium)', location: { lat: 22.38136, lng: 114.1899  }},
+        {id: 2, name: 'Hong Kong Film Archive (Cinema)', location: { lat: 22.285056, lng: 114.222075  }},
+        {id: 3, name: 'Kwai Tsing Theatre (Black Box Theatre)', location: { lat: 22.35665, lng: 114.12623 }},
         // {key: 'manlyBeach', location: { lat: -33.8209738, lng: 151.2563253 }},
         // {key: 'hyderPark', location: { lat: -33.8690081, lng: 151.2052393 }},
         // {key: 'theRocks', location: { lat: -33.8587568, lng: 151.2058246 }},
