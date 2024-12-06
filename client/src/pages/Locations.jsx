@@ -1,12 +1,9 @@
 import { useState, useMemo } from 'react';
 import Table from 'react-bootstrap/Table';
 import Container from 'react-bootstrap/Container';
-import { useNavigate } from 'react-router-dom';
 import searchSVG from '../assets/search.svg'
 import sortAscSVG from '../assets/sort-ascending.svg'
 import sortDscSVG from '../assets/sort-descending.svg'
-import heartFilledSVG from '../assets/heart-filled.svg'
-import heartEmptySVG from '../assets/heart-empty.svg'
 import './Locations.css'
 import { HeartButton } from '../components/HeartButton';
 
