@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import Table from 'react-bootstrap/Table';
 import Container from 'react-bootstrap/Container';
 import { useNavigate } from 'react-router-dom';
@@ -43,7 +43,10 @@ export const Locations = () => {
         // del request to remove from fav list
     }
 
-    const filteredData = data.filter(loc => loc.name.toLowerCase().includes(query.toLowerCase()))
+    const filteredData = useMemo(()=>
+        data.filter(loc => loc.name.toLowerCase().includes(query.toLowerCase())),
+    [data, query])
+    
 
     return (
         <Container className='w-75'>
