@@ -7,7 +7,7 @@ import { Locations } from './pages/Locations'
 import { Events } from './pages/Events'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Favourites } from './pages/Favourites';
-
+import { LocationMap } from './pages/Map';
 
 function App() {
 
@@ -19,6 +19,7 @@ function App() {
         <Route path="/events" element={<Events />} />
         <Route path="/locations" element={<Locations />} />
         <Route path="/favourites" element={<Favourites />} />
+        <Route path="/map" element={<LocationMap />} />
         {/* <Route path="*" element={<NoMatch />} /> */}
       </Routes>
     </BrowserRouter>

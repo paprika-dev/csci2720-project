@@ -14,8 +14,9 @@ export const MyNavbar = () => {
             <Navbar.Collapse id="basic-navbar-nav">
                 <Nav className="me-auto">
                     <Nav.Link as={Link} to="/locations">Locations</Nav.Link>
-                    <Nav.Link as={Link} to="/events">Events</Nav.Link>
+                    <Nav.Link as={Link} to="/map">Map</Nav.Link>
                     <Nav.Link as={Link} to="/favourites">Favourites</Nav.Link>
+                    <Nav.Link as={Link} to="/events">Events</Nav.Link>
                 </Nav>
             </Navbar.Collapse>
         </Navbar>
