@@ -4,8 +4,11 @@ import Container from 'react-bootstrap/Container';
 import searchSVG from '../assets/search.svg'
 import sortAscSVG from '../assets/sort-ascending.svg'
 import sortDscSVG from '../assets/sort-descending.svg'
+import filterSVG from '../assets/filter.svg'
 import './Locations.css'
 import { HeartButton } from '../components/HeartButton';
+import { Link } from 'react-router-dom';
+
 
 export const Locations = () => {
 
@@ -49,6 +52,14 @@ export const Locations = () => {
         <Container className='w-75'>
             <div className='d-flex justify-content-end my-3'>
                 <div>
+                    <label htmlFor="distance Filter" className='me-2'><img src={filterSVG} /></label>
+                    {/* <input id="locSearch" value={query} onChange={e=>setQuery(e.target.value)}></input> */}
+                </div>
+                <div>
+                    <label htmlFor="CategoryDropdown" className='me-2'><img src={filterSVG} /></label>
+                    {/* <input id="locSearch" value={query} onChange={e=>setQuery(e.target.value)}></input> */}
+                </div>
+                <div>
                     <label htmlFor="locSearch" className='me-2'><img src={searchSVG} /></label>
                     <input id="locSearch" value={query} onChange={e=>setQuery(e.target.value)}></input>
                 </div>
@@ -69,7 +80,7 @@ export const Locations = () => {
                     {filteredData.map((row, i)=>{return(
                         <tr key={i}>
                         <td>{row.id}</td>
-                        <td>{row.name}</td>
+                        <td><Link to={"/locations/"+row.id}>{row.name}</Link></td>
                         <td>{row.evNum}</td>
                         <td><HeartButton filled={row.isFav} clickFunc={()=>addToFav(row.id)} /></td>
                     </tr>
