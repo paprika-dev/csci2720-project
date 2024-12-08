@@ -1,5 +1,9 @@
 #root {
   font-family: sans-serif;
+  --theme-color-1: #30B1BF;
+  --theme-color-2: #1D6A73;
+  --theme-color-3: #F2F2F2;
+  --theme-color-4: #D2D6D9;
 }
 
 /* .logo {

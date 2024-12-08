@@ -1,7 +1,12 @@
 [
-    {"id": 1, "name": "dummy_Hong Kong Coliseum (Arena)", "evNum": 10, "isFav": true},
-    {"id": 2, "name": "dummy_Hong Kong Film Archive (Cinema)", "evNum": 3, "isFav": false},
-    {"id": 3, "name": "dummy_Hong Kong Film Archive (Foyer)", "evNum": 7, "isFav": true},
-    {"id": 4, "name": "dummy_Black Box Theatre, Kwai Tsing Theatre", "evNum": 20, "isFav": true},
-    {"id": 5, "name": "dummy_Tsuen Wan Town Hall (Auditorium)", "evNum": 12, "isFav": false}
+    {"id": 1, "name": "dummy_Hong Kong Coliseum (Arena)", "evNum": 10, "evCat": ["Film","Sports","Music"], "isFav": true, "distance":10},
+    {"id": 2, "name": "dummy_Hong Kong Film Archive (Cinema)", "evNum": 3, "evCat": ["Drama", "Music"], "isFav": false, "distance":30},
+    {"id": 3, "name": "dummy_Hong Kong Film Archive (Foyer)", "evNum": 7, "evCat": ["Film","Drama","Music"], "isFav": true, "distance":20},
+    {"id": 4, "name": "dummy_Black Box Theatre, Kwai Tsing Theatre", "evCat": ["Film","Art","Sports"], "evNum": 20, "isFav": true, "distance":25},
+    {"id": 5, "name": "dummy_Tsuen Wan Town Hall (Auditorium)", "evCat": ["Wine"], "evNum": 12, "isFav": false, "distance":72},
+    {"id": 6, "name": "dummy2_Hong Kong Coliseum (Arena)", "evNum": 10, "evCat": ["Film","Sports","Music"], "isFav": true, "distance":24},
+    {"id": 7, "name": "dummy2_Hong Kong Film Archive (Cinema)", "evNum": 3, "evCat": ["Drama", "Music"], "isFav": false,"distance":54},
+    {"id": 8, "name": "dummy2_Hong Kong Film Archive (Foyer)", "evNum": 7, "evCat": ["Film","Drama","Music"], "isFav": false,"distance":18},
+    {"id": 9, "name": "dummy2_Black Box Theatre, Kwai Tsing Theatre", "evCat": ["Film","Art","Sports"], "evNum": 50, "isFav": true, "distance":6},
+    {"id": 10, "name": "dummy2_Tsuen Wan Town Hall (Auditorium)", "evCat": ["Wine","Gourmet"], "evNum": 12, "isFav": false, "distance":2}
 ]

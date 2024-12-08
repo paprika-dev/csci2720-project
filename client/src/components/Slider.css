@@ -1,0 +1,11 @@
+.value-bubble {
+    top: -2.5em;
+    background-color: white;
+    /* color: white; */
+    transform: translateX(-50%);
+    font-size: 0.85em;
+    /* font-weight: bold; */
+    border-radius: 10px;
+    white-space: nowrap;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1), 0 4px 6px 0 rgba(0, 0, 0, 0.1);
+  }
