@@ -6,6 +6,7 @@ import filterSVG from '../assets/filter.svg'
 import distanceSVG from '../assets/distance.svg'
 import { LocationTable } from '../components/LocationTable';
 import { Slider } from '../components/Slider';
+import './Locations.css'
 
 export const Locations = () => {
     const [query, setQuery] = useState("")
@@ -30,8 +31,8 @@ export const Locations = () => {
     const categories = [...new Set(data.flatMap(loc => loc.evCat))]
 
     return (
-        <Container className='w-75'>
-            <div className='d-flex justify-content-end align-items-center my-3 gap-4'>
+        <Container className='myContainer w-75 my-5 py-5 px-5'>
+            <div className='d-flex justify-content-end align-items-center mb-3 gap-4'>
                 <div className='d-flex align-items-center gap-2 position-relative'>
                     <img src={distanceSVG} />
                     <Slider value={distance} stepSize={5} setValue={setDistance} tag={"< "+distance+" km"}></Slider>

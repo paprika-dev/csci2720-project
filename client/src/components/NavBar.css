@@ -1,6 +1,7 @@
 #navbar, #navbar-brand {
     font-family: "Gaegu", sans-serif;
     font-size: 1.3em;
+    background-color: white !important;
 }
 
 #navbar-brand {

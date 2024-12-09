@@ -19,10 +19,8 @@ export const Favourites = () => {
         data.filter(loc => loc.isFav == true),
     [data])
 
-    useEffect(()=>{console.log("filtered", filteredData, filteredData.length)}, [filteredData])
-
     return (
-        <Container className='w-75 mt-4'>
+        <Container className='w-75 mt-5'>
             <LocationTable data={filteredData} dataChanger={setData}/>
         </Container>
     )

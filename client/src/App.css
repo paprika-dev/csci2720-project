@@ -6,6 +6,17 @@
   --theme-color-4: #D2D6D9;
 }
 
+body {
+  min-height: 100vh;
+  /* background-color: #30B1BF !important; */
+  background-image: url(./assets/background.jpg);
+  background-size: cover;
+}
+
+img {
+  pointer-events: none;
+}
+
 /* .logo {
   height: 6em;
   padding: 1.5em;
