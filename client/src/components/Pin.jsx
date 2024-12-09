@@ -33,6 +33,7 @@ export const PoiMarkers = ({ pois }) => {
       <>
         {pois.map( (poi) => (
           <MarkerWithInfoWindow
+            key={poi.id}
             position={poi.location}
             locName={poi.name}
             locId={poi.id}>

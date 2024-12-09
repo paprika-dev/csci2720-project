@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from 'react';
 import { LocationTable } from '../components/LocationTable';
-import Container from 'react-bootstrap/esm/Container';
+import { MyContainer } from '../components/MyContainer';
 
 export const Favourites = () => {
     const [data, setData] = useState([])
@@ -12,7 +12,6 @@ export const Favourites = () => {
         fetch(locDataURL)
         .then(res=>res.json())
         .then(d=>setData(d))
-        .then(console.log("favlist get"))
     }, [])
 
     const filteredData = useMemo(()=>
@@ -20,8 +19,8 @@ export const Favourites = () => {
     [data])
 
     return (
-        <Container className='w-75 mt-5'>
+        <MyContainer>
             <LocationTable data={filteredData} dataChanger={setData}/>
-        </Container>
+        </MyContainer>
     )
 }
