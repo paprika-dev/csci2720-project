@@ -2,7 +2,7 @@ import { useState, useEffect, useMemo } from 'react';
 import { LocationTable } from '../components/LocationTable';
 import { MyContainer } from '../components/MyContainer';
 
-export const Favourites = () => {
+export default function Favourites() {
     const [data, setData] = useState([])
 
     "*** to be implemented ***"

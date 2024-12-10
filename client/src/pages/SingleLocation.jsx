@@ -9,7 +9,7 @@ const locData = [
     {id: 5, name: "dummy_Tsuen Wan Town Hall (Auditorium)", evNum: 12, isFav: false}
 ]
 
-export const SingleLocation = () =>{
+export default function SingleLocation() {
     const params = useParams()
     params.locid
 

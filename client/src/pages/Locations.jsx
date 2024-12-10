@@ -8,7 +8,7 @@ import { LocationTable } from '../components/LocationTable';
 import { Slider } from '../components/Slider';
 import { MyContainer } from '../components/MyContainer';
 
-export const Locations = () => {
+export default function Locations() {
     const [query, setQuery] = useState("")
     const [data, setData] = useState([])
     const [distance, setDistance] = useState(80)
@@ -32,7 +32,7 @@ export const Locations = () => {
 
     return (
         <MyContainer>
-            <div className='d-flex justify-content-end align-items-center mb-3 gap-4'>
+            <div className='d-flex align-items-center mb-3 gap-4'>
                 <div className='d-flex align-items-center gap-2 position-relative'>
                     <img src={distanceSVG} />
                     <Slider value={distance} stepSize={5} setValue={setDistance} tag={"< "+distance+" km"}></Slider>
@@ -54,6 +54,5 @@ export const Locations = () => {
             </div>
             <LocationTable data={filteredData} dataChanger={setData}/>
         </MyContainer>
-        
     )
 }

@@ -35,7 +35,7 @@ export const LocationTable = ({ data, dataChanger }) => {
     }
 
     return (
-        <Table bordered>
+        <Table>
             <thead>
                 <tr>
                 <th className='col-1'>ID</th>

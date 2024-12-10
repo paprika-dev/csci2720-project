@@ -2,7 +2,7 @@ import {APIProvider, Map} from '@vis.gl/react-google-maps';
 import { PoiMarkers } from '../components/Pin.jsx';
 import { MyContainer } from '../components/MyContainer.jsx';
 
-export const LocationMap = () => {
+export default function LocationMap() {
 
     const POIs = [
         {id: 1, name: 'Sha Tin Town Hall (Auditorium)', location: { lat: 22.38136, lng: 114.1899  }},
