@@ -1,18 +1,56 @@
-const comments = [
-    "I love this place", 
-    "Amazing performance", 
-    "Much better than I expected"
-]
+import Form from 'react-bootstrap/Form';
+import sendSVG from '../assets/send.svg'
+import commentSVG from '../assets/comment.svg'
+import writeCommentSVG from '../assets/write-comment.svg'
+import avatarSVG1 from '../assets/avatar-1.svg'
+import avatarSVG2 from '../assets/avatar-2.svg'
+import avatarSVG3 from '../assets/avatar-3.svg'
+import avatarSVG4 from '../assets/avatar-4.svg'
+import avatarSVG5 from '../assets/avatar-5.svg'
+import avatarSVG6 from '../assets/avatar-6.svg'
+import { useState, useEffect } from 'react';
+import './Comment.css'
 
-export const Comment = () => {
+export const Comment = ({ cmts }) => {
+    const avatars = [avatarSVG1, avatarSVG2, avatarSVG3, avatarSVG4, avatarSVG5, avatarSVG6]
+    const useAvatar = (username) => avatars[username.charCodeAt(0) % 6]
+    const [myComment, setMyComment] = useState("")
+    const [comments, setComments] = useState([...cmts])
+    const username = JSON.parse(localStorage.getItem('user')).username
+    
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        let s = [...comments]
+        s.unshift({"user": username, "comment": myComment})
+        setComments(s)
+        e.target.reset()
+    }
+
     return(
-        <>
-        <p>Comments</p>
-        {comments.map(comment => {
-            return(
-                <p>{comment}</p>
-            )
-        })}
-        </>
+        <div className="d-flex flex-column" style={{minWidth: "25vw"}}>
+            <p><img src={commentSVG} />&nbsp;&nbsp;Comments</p>
+            <div className='pt-1 pb-2 px-2 overflow-auto' style={{maxHeight: "30vh"}}>
+                {comments.length == 0 && <p>No user comments</p>}
+                {comments && comments.map(comment => {
+                    return(
+                        <div key={comment.user} className='d-flex flex-column user-comment px-3 py-2 mb-3'>
+                            <p className='mb-1 comment-username'><img src={useAvatar(comment.user)} /> {comment.user}</p>
+                            <p className='mb-0 comment-text'>{comment.comment}</p>
+                        </div>
+                    )
+                })}
+            </div>
+            <hr></hr>
+            <Form onSubmit={handleSubmit}>
+                <Form.Group className="mb-3" controlId="review-text-area">
+                    <Form.Label><img src={writeCommentSVG} />&nbsp;&nbsp;Write a review</Form.Label>
+                    <div className='d-flex gap-1'>
+                        <Form.Control className='comment-text' as="textarea" rows={3} onChange={e=>setMyComment(e.target.value)} required/>
+                        <button type="submit"><img src={sendSVG} /></button>
+                    </div>
+                </Form.Group>
+
+            </Form>
+        </div>
     )
 }

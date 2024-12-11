@@ -1,0 +1,21 @@
+.user-comment {
+    background: linear-gradient(100deg, rgba(255, 255, 255, 0.38), rgba(255, 255, 255, 0.55));
+    box-shadow: 0 1px 3px 1px rgba(0, 0, 0, 0.08), 0 3px 6px 0 rgba(0, 0, 0, 0.05);
+    border-radius: 20px;
+}
+
+.comment-username {
+    color: var(--theme-color-2);
+    font-size: 1.1em;
+    font-weight: 700;
+}
+
+.comment-username, .comment-text{
+    font-family: "Gaegu", sans-serif;
+}
+
+button {
+    padding: 0;
+    border: none;
+    background: none;
+}

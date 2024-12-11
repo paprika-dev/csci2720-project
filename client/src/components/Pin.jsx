@@ -9,7 +9,7 @@ const MarkerWithInfoWindow = ({position, locId, locName}) => {
   const handleMarkerClick = useCallback(() => setInfoWindowShown(isShown => !isShown), []);
   const handleClose = useCallback(() => setInfoWindowShown(false), []);
 
-  const locURL = "/locations/" + locId 
+  const locURL = "/locations/" + locName.replace(/\s+/g,'-')
 
   return (
     <>

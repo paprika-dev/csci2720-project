@@ -1,5 +1,4 @@
 import { useState, useMemo, useEffect } from 'react';
-import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
 import searchSVG from '../assets/search.svg'
 import filterSVG from '../assets/filter.svg'
@@ -19,7 +18,7 @@ export default function Locations() {
     useEffect(() => {
         fetch(locDataURL)
         .then(res=>res.json())
-        .then(d=>setData(d))
+        .then(d=>{setData(d)})
     }, [])
 
     const filteredData = useMemo(()=>

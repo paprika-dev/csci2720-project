@@ -9,6 +9,6 @@
 }
 
 #navbar-brand {
-    color: #0F4C81;
+    color: var(--theme-color-5);
     /* color: #2ca9bc; */
 }

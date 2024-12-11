@@ -34,6 +34,8 @@ export const LocationTable = ({ data, dataChanger }) => {
         dataChanger(newData)
     }
 
+    const linkURL = (locName) => locName.replace(/\s+/g,'-')
+
     return (
         <Table>
             <thead>
@@ -51,7 +53,7 @@ export const LocationTable = ({ data, dataChanger }) => {
                 {data.map((row, i)=>{return(
                     <tr key={i}>
                     <td>{row.id}</td>
-                    <td><Link to={"/locations/"+row.id}>{row.name}</Link></td>
+                    <td><Link to={"/locations/"+linkURL(row.name)}>{row.name}</Link></td>
                     <td>{row.evNum}</td>
                     <td><HeartButton filled={row.isFav} clickFunc={()=>handleFavList(row.id, row.isFav)} /></td>
                 </tr>

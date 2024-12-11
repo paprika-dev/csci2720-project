@@ -25,6 +25,11 @@ app.use('/api', protectedRoutes);
 
 d = require('./db_for_frontend_testing/location_data.json')
 
+app.get('/front_end_testing_single_location/:locName', (req, res) => {
+    const targetIndex = d.findIndex(loc => loc.name == req.params.locName.replace(/-+/g,' '))
+    res.send(d[targetIndex]);
+});
+
 app.get('/front_end_testing_all_locations', (req, res) => {
     res.send(d);
 });
