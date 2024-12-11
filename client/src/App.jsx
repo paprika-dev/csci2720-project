@@ -12,10 +12,16 @@ const Favourites = lazy(() => import('./pages/Favourites'))
 const Events = lazy(() => import('./pages/Events'))
 const Login = lazy(() => import('./pages/Login'))
 const Register = lazy(() => import('./pages/Register'))
+const Admin = lazy(() => import('./pages/Admin'))
 import 'bootstrap/dist/css/bootstrap.min.css';
+import AdminRoute from './components/AdminRoute';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(!!localStorage.getItem('token'));
+  const [isAdmin, setIsAdmin] = useState(() => {
+    const user = JSON.parse(localStorage.getItem('user'));
+    return user.isAdmin ? true : false;
+  });
 
   return (
     <Suspense>
@@ -66,6 +72,11 @@ function App() {
             <ProtectedRoute>
               <LocationMap />
             </ProtectedRoute>
+          } />
+          <Route path="/admin" element={
+            <AdminRoute>
+              <Admin />
+            </AdminRoute>
           } />
           {/* <Route path="*" element={<NoMatch />} /> */}
         </Routes>
