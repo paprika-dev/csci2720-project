@@ -1,5 +1,6 @@
 import { useParams } from "react-router-dom"
 import { Comment } from "../components/Comment"
+import { MyContainer } from "../components/MyContainer"
 
 const locData = [
     {id: 1, name: "dummy_Hong Kong Coliseum (Arena)", evNum: 10, isFav: true},
@@ -13,12 +14,26 @@ export default function SingleLocation() {
     const params = useParams()
     params.locid
 
-    //retrive location info
+    //retrive location info\
+
+    const url = `https://www.google.com/maps/embed/v1/place?key=${import.meta.env.VITE_GOOGLE_MAPS_API_KEY}
+                    &q=Space+Needle,Seattle+WA`
 
     return (
-        <>
-            <p>Location {params.locid}</p>
-            <Comment></Comment>
-        </>
+        <MyContainer>
+            <div className="d-flex flex-column flex-lg-row row-gap-3 column-gap-5">
+                <div>
+                    <p>Location {params.locid}</p>
+                    <iframe
+                        style={{height:"45vh", width:"40vw"}}
+                        loading="lazy"
+                        allowFullScreen
+                        referrerPolicy="no-referrer-when-downgrade"
+                        src={url}>
+                    </iframe>
+                </div>
+                <Comment></Comment>
+            </div>
+        </MyContainer>
     )
 }
