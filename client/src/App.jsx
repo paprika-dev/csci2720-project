@@ -52,7 +52,7 @@ function App() {
               <Locations />
             </ProtectedRoute>
           } />
-          <Route path="/locations/:locid" element={
+          <Route path="/locations/:locName" element={
             <ProtectedRoute>
               <SingleLocation />
             </ProtectedRoute>

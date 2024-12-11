@@ -4,6 +4,7 @@
   --theme-color-2: #1D6A73;
   --theme-color-3: #F2F2F2;
   --theme-color-4: #D2D6D9;
+  --theme-color-5: #0F4C81;
 }
 
 body {
@@ -16,6 +17,7 @@ body {
 img {
   pointer-events: none;
 }
+
 
 /* .logo {
   height: 6em;

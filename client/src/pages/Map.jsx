@@ -1,14 +1,19 @@
 import { APIProvider, Map } from '@vis.gl/react-google-maps';
 import { PoiMarkers } from '../components/Pin.jsx';
 import { MyContainer } from '../components/MyContainer.jsx';
+import { useState, useEffect } from 'react';
 
 export default function LocationMap() {
     
-    const POIs = [
-        {id: 1, name: 'Sha Tin Town Hall (Auditorium)', location: { lat: 22.38136, lng: 114.1899  }},
-        {id: 2, name: 'Hong Kong Film Archive (Cinema)', location: { lat: 22.285056, lng: 114.222075  }},
-        {id: 3, name: 'Kwai Tsing Theatre (Black Box Theatre)', location: { lat: 22.35665, lng: 114.12623 }},
-      ];
+    const [POIs, setPOIs] = useState([])
+
+    // get request to fetch location data
+    const locDataURL = "http://127.0.0.1:5000/front_end_testing_all_locations" // to be changed
+    useEffect(() => {
+        fetch(locDataURL)
+        .then(res=>res.json())
+        .then(d=>{setPOIs(d)})
+    }, [])
 
     return (
         <MyContainer>
