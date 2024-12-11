@@ -16,7 +16,7 @@ function Register() {
             return;
         }
         try {
-            await axios.post('http://localhost:5000/api/auth/register', { username: formData.username, password: formData.password });
+            await axios.post('http://localhost:5000/api/auth/register', { username: formData.username, password: formData.password, isAdmin: false });
             alert('User registered successfully');
             navigation('/login');
         } catch (error) {
