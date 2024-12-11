@@ -1,28 +1,72 @@
-import { lazy, Suspense } from 'react'
+import { lazy, Suspense, useState, useEffect } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import './App.css'
-import { MyNavbar} from './components/NavBar'
+import { ProtectedRoute } from './components/ProtectedRoute';
+import { PublicRoute } from './components/PublicRoute';
+import { MyNavbar } from './components/NavBar'
 const Home = lazy(() => import('./pages/Home'))
 const Locations = lazy(() => import('./pages/Locations'))
 const LocationMap = lazy(() => import('./pages/Map'))
 const SingleLocation = lazy(() => import('./pages/SingleLocation'))
 const Favourites = lazy(() => import('./pages/Favourites'))
 const Events = lazy(() => import('./pages/Events'))
+const Login = lazy(() => import('./pages/Login'))
+const Register = lazy(() => import('./pages/Register'))
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
+  const [isAuthenticated, setIsAuthenticated] = useState(!!localStorage.getItem('token'));
 
   return (
     <Suspense>
       <BrowserRouter>
-        <MyNavbar></MyNavbar>
+        {isAuthenticated && <MyNavbar setIsAuthenticated={setIsAuthenticated}/>}
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/events" element={<Events />} />
-          <Route path="/locations" element={<Locations />} />
-          <Route path="/locations/:locid" element={<SingleLocation />} />
-          <Route path="/favourites" element={<Favourites />} />
-          <Route path="/map" element={<LocationMap />} />
+          <Route path="/" element={
+            <PublicRoute>
+              <Login setIsAuthenticated={setIsAuthenticated}/> 
+            </PublicRoute>
+          }/>
+          <Route path='/login' element = {
+            <PublicRoute>
+              <Login setIsAuthenticated={setIsAuthenticated}/> 
+            </PublicRoute>
+          }/>
+          <Route path='/register' element={
+            <PublicRoute>
+              <Register/>
+            </PublicRoute>
+          }/>
+          <Route path="/events" element={
+            <ProtectedRoute>
+              <Events />
+            </ProtectedRoute>
+          } />
+          <Route path="/home" element={
+            <ProtectedRoute>
+              <Home />
+            </ProtectedRoute>
+          } />
+          <Route path="/locations" element={
+            <ProtectedRoute>
+              <Locations />
+            </ProtectedRoute>
+          } />
+          <Route path="/locations/:locid" element={
+            <ProtectedRoute>
+              <SingleLocation />
+            </ProtectedRoute>
+          } />
+          <Route path="/favourites" element={
+            <ProtectedRoute>
+              <Favourites />
+            </ProtectedRoute>
+          } />
+          <Route path="/map" element={
+            <ProtectedRoute>
+              <LocationMap />
+            </ProtectedRoute>
+          } />
           {/* <Route path="*" element={<NoMatch />} /> */}
         </Routes>
       </BrowserRouter>

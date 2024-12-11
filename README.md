@@ -13,4 +13,4 @@ At the root directory (csci2720-project)
 - `cd client && cp .env.example .env`, then insert your google maps api key in `\client\.env`
 - `npm run dev` to start the app for developement, or `npm run start` for production
 
-The client will be running at `http://localhost:5173` and the server will be running at `http://localhost:8080`.
+The client will be running at `http://localhost:5173` and the server will be running at `http://localhost:5000`.
