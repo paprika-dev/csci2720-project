@@ -1,9 +1,20 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
-import './NavBar.css'
+import Button from 'react-bootstrap/Button';
+import './NavBar.css';
 
-export const MyNavbar = () => {
+export const MyNavbar = ({ setIsAuthenticated }) => {
+    const navigate = useNavigate();
+    
+    const user = JSON.parse(localStorage.getItem('user'));
+
+    const handleLogout = () => {
+        setIsAuthenticated(false);
+        localStorage.removeItem('token');
+        navigate('/login');
+    };
+
     return (
         <Navbar id="navbar" expand="md" className="bg-body-tertiary px-4">
             <Navbar.Brand id="navbar-brand" as={Link} to="/">LosGehts</Navbar.Brand>
@@ -15,7 +26,13 @@ export const MyNavbar = () => {
                     <Nav.Link as={Link} to="/favourites">Favourites</Nav.Link>
                     <Nav.Link as={Link} to="/events">Events</Nav.Link>
                 </Nav>
+                <Nav>
+                    <Navbar.Text className="me-4">
+                        {user.isAdmin ? `Admin: ${user.username}` : user.username}
+                    </Navbar.Text>
+                    <Button variant="outline-danger" onClick={handleLogout}>Logout</Button>
+                </Nav>
             </Navbar.Collapse>
         </Navbar>
-    )
-}
+    );
+};

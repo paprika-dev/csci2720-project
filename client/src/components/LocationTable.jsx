@@ -17,7 +17,7 @@ export const LocationTable = ({ data, dataChanger }) => {
     
     const handleFavList = async (i, isFav) => {
         // add to or remove from list of favourite locations
-        const favListURL = "http://127.0.0.1:8080/front_end_testing_favlist/" // to be changed
+        const favListURL = "http://127.0.0.1:5000/front_end_testing_favlist/" // to be changed
 
         const res = await fetch(favListURL, {
             method: isFav ? "DELETE" : "POST",

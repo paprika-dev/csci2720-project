@@ -14,7 +14,7 @@ export default function Locations() {
     const [category, setCategory] = useState("all")
     
     // get request to fetch location data
-    const locDataURL = "http://127.0.0.1:8080/front_end_testing_all_locations" // to be changed
+    const locDataURL = "http://127.0.0.1:5000/front_end_testing_all_locations" // to be changed
     useEffect(() => {
         fetch(locDataURL)
         .then(res=>res.json())
