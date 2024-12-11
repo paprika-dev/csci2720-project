@@ -7,7 +7,7 @@ export default function Favourites() {
 
     "*** to be implemented ***"
     // get request to fetch location data
-    const locDataURL = "http://127.0.0.1:8080/front_end_testing_favlist" // to be changed
+    const locDataURL = "http://127.0.0.1:5000/front_end_testing_favlist" // to be changed
     useEffect(() => {
         fetch(locDataURL)
         .then(res=>res.json())
