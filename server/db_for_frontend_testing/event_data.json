@@ -1,0 +1,38 @@
+[
+    {
+        "id": "1",
+        "title": "Christmas Chaos: A Night of Hard Rock & Metal",
+        "venue": "Hong Kong Convention Center",
+        "dateTime": "2024-12-25T20:00:00",
+        "description": "A night of unforgettable hard rock and metal performances.",
+        "presenter": "Rock Fest HK",
+        "price": 220,
+        "category": ["Music", "Concert"],
+        "distance": 15,
+        "thumbnail": "https://tickcats.co/wp-content/uploads/2024/10/CC_Original.jpg"
+    },
+    {
+        "id": "2",
+        "title": "Saxfari Ensemble Concert",
+        "venue": "Kowloon Bay Theater",
+        "dateTime": "2024-12-22T19:30:00",
+        "description": "Enjoy a night of saxophone ensemble performances.",
+        "presenter": "Saxfari Music Group",
+        "price": 488,
+        "category": ["Music", "Concert"],
+        "distance": 8,
+        "thumbnail": "https://media.art-mate.net/uploads/artmate/202411/20241115_204835_HiYnUEoK93_p.jpeg"
+    },
+    {
+        "id": "3",
+        "title": "Computer Festival",
+        "venue": "Central",
+        "dateTime": "2024-12-22T19:30:00",
+        "description": "Computer night and play every game you can imagine.",
+        "presenter": "Saxfari Music Group",
+        "price": 488,
+        "category": ["Music", "Concert","Game"],
+        "distance": 8,
+        "thumbnail": "https://static.independent.co.uk/s3fs-public/thumbnails/image/2015/09/17/17/dreamhack.jpg?width=1200"
+    }
+]
