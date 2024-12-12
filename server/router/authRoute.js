@@ -6,7 +6,7 @@ const User = require('../model/User');
 const router = express.Router();
 
 router.post('/register', async (req, res) => {
-    const { username, password } = req.body;
+    const { username, password, isAdmin } = req.body;
 
     try {
         const existingUser = await User.findOne({ username });
@@ -15,7 +15,7 @@ router.post('/register', async (req, res) => {
         }
 
         const hashedPassword = await bcrypt.hash(password, 10);
-        const newUser = new User({ username, password: hashedPassword });
+        const newUser = new User({ username, password: hashedPassword, isAdmin });
         await newUser.save();
         res.status(201).json({ message: 'User registered successfully' });
     } catch (error) {

@@ -29,6 +29,7 @@ export const MyNavbar = ({ isAuthenticated, setIsAuthenticated }) => {
                     <Nav.Link as={Link} to="/locations">Locations</Nav.Link>
                     <Nav.Link as={Link} to="/favourites">Favourites</Nav.Link>
                     <Nav.Link as={Link} to="/events">Events</Nav.Link>
+                    {user.isAdmin && <Nav.Link as={Link} to="/admin">Admin</Nav.Link>}
                 </Nav>
                 {!isAuthenticated &&
                 <Nav>

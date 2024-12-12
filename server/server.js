@@ -3,8 +3,9 @@ const mongoose = require('mongoose');
 const app = express();
 require('dotenv').config();
 
-const authRoutes = require('./router/auth');
+const authRoutes = require('./router/authRoute');
 const protectedRoutes = require('./router/protected');
+const adminRoutes = require('./router/adminRoute');
 
 const cors = require('cors');
 app.use(cors());
@@ -15,6 +16,7 @@ mongoose.connect(process.env.MONGO_URI)
         .then(() => { console.log("DB connected") })
         .catch(err => console.log(err))
 
+app.use('/api/admin', adminRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api', protectedRoutes);
 
