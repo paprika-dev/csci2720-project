@@ -1,0 +1,62 @@
+[
+    {
+        "id": "3110031",
+        "latitude": "22.501639",
+        "longitude": "114.128911",
+        "name": "North District Town Hall (Auditorium)"
+    },
+    {
+        "id": "36310035",
+        "latitude": "22.38136",
+        "longitude": "114.18990",
+        "name": "Sha Tin Town Hall (Auditorium)"
+    },
+    {
+        "id": "50110015",
+        "latitude": "22.29386",
+        "longitude": "114.17053",
+        "name": "Hong Kong Cultural Centre (Grand Theatre)"
+    },
+    {
+        "id": "75010017",
+        "latitude": "22.285056",
+        "longitude": "114.222075",
+        "name": "Hong Kong Film Archive (Cinema)"
+    },
+    {
+        "id": "76810049",
+        "latitude": "22.391810",
+        "longitude": "113.976771",
+        "name": "Tuen Mun Town Hall (Cultural Activities Hall)"
+    },
+    {
+        "id": "8268",
+        "latitude": "22.32427",
+        "longitude": "114.21494",
+        "name": "East Kowloon Cultural Centre"
+    },
+    {
+        "id": "87110120",
+        "latitude": "22.35665",
+        "longitude": "114.12623",
+        "name": "Kwai Tsing Theatre (Lecture Room)"
+    },
+    {
+        "id": "87310362",
+        "latitude": "22.44152",
+        "longitude": "114.02289",
+        "name": "Yuen Long Theatre (Dance Studio)"
+    },
+    {
+        "id": "87510008",
+        "latitude": "22.282279",
+        "longitude": "114.161545",
+        "name": "Hong Kong City Hall (Concert Hall)"
+    },
+    {
+        "id": "87616551",
+        "latitude": "22.31368",
+        "longitude": "114.18556",
+        "name": "Ko Shan Theatre (New Wing Auditorium)"
+    }
+]

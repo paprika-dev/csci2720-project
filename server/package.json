@@ -3,19 +3,26 @@
   "version": "1.0.0",
   "description": "",
   "main": "server.js",
+  "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js",
-    "dev": "nodemon server.js"
+    "import": "dotenvx run -- node datasets/import.js",
+    "import:clear": "dotenvx run -- node datasets/import.js --clear",
+    "start": "dotenvx run -- node server.js",
+    "start:watch": "dotenvx run -- node --watch server.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^4.21.1",
+    "express-session": "^1.18.1",
     "mongoose": "^8.8.3"
   },
   "devDependencies": {
-    "nodemon": "^3.1.7"
+    "@biomejs/biome": "1.9.4",
+    "@dotenvx/dotenvx": "^1.29.0",
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.0",
+    "@types/express-session": "^1.18.1"
   }
 }
