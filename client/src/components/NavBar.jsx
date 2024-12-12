@@ -5,12 +5,7 @@ import Button from 'react-bootstrap/Button';
 import './NavBar.css';
 
 export const MyNavbar = ({ isAuthenticated, setIsAuthenticated }) => {
-
     const location = useLocation();
-    if (location.pathname === "/login") {
-        return(<></>)
-    }
-
     const navigate = useNavigate();
     
     const user = JSON.parse(localStorage.getItem('user'));
@@ -22,8 +17,13 @@ export const MyNavbar = ({ isAuthenticated, setIsAuthenticated }) => {
     const handleLogout = () => {
         setIsAuthenticated(false);
         localStorage.removeItem('token');
-        navigate('/login');
+        navigate('/');
     };
+
+    // hide navbar on login page and register page
+    if (location.pathname === "/login" || location.pathname === "/register") {
+        return(<></>)
+    }
 
     return (
         <Navbar id="navbar" expand="md" className="bg-body-tertiary px-4">
