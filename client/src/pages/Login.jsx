@@ -19,7 +19,7 @@ function Login({ setIsAuthenticated }) {
             localStorage.setItem('token', token);
             localStorage.setItem('user', JSON.stringify(user));
             setIsAuthenticated(true);
-            navigate('/home');
+            navigate('/');
         } catch (error) {
             setError('Invalid username or password');
             console.error(error);

@@ -4,15 +4,19 @@ import Navbar from 'react-bootstrap/Navbar';
 import Button from 'react-bootstrap/Button';
 import './NavBar.css';
 
-export const MyNavbar = ({ setIsAuthenticated }) => {
+export const MyNavbar = ({ isAuthenticated, setIsAuthenticated }) => {
     const navigate = useNavigate();
     
     const user = JSON.parse(localStorage.getItem('user'));
 
+    const handleLogin = () => {
+        navigate('/login');
+    };
+
     const handleLogout = () => {
         setIsAuthenticated(false);
         localStorage.removeItem('token');
-        navigate('/login');
+        navigate('/');
     };
 
     return (
@@ -26,12 +30,17 @@ export const MyNavbar = ({ setIsAuthenticated }) => {
                     <Nav.Link as={Link} to="/favourites">Favourites</Nav.Link>
                     <Nav.Link as={Link} to="/events">Events</Nav.Link>
                 </Nav>
+                {!isAuthenticated &&
+                <Nav>
+                    <Button variant="outline-success" onClick={handleLogin}>Login</Button>
+                </Nav>}
+                {isAuthenticated &&
                 <Nav>
                     <Navbar.Text className="me-4">
                         {user.isAdmin ? `Admin: ${user.username}` : user.username}
                     </Navbar.Text>
                     <Button variant="outline-danger" onClick={handleLogout}>Logout</Button>
-                </Nav>
+                </Nav>}
             </Navbar.Collapse>
         </Navbar>
     );

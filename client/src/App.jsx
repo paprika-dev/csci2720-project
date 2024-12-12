@@ -12,6 +12,7 @@ const Favourites = lazy(() => import('./pages/Favourites'))
 const Events = lazy(() => import('./pages/Events'))
 const Login = lazy(() => import('./pages/Login'))
 const Register = lazy(() => import('./pages/Register'))
+const NoMatch = lazy(() => import('./pages/NoMatch'))
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
@@ -20,11 +21,11 @@ function App() {
   return (
     <Suspense>
       <BrowserRouter>
-        {isAuthenticated && <MyNavbar setIsAuthenticated={setIsAuthenticated}/>}
+        <MyNavbar isAuthenticated={isAuthenticated} setIsAuthenticated={setIsAuthenticated}/>
         <Routes>
           <Route path="/" element={
             <PublicRoute>
-              <Login setIsAuthenticated={setIsAuthenticated}/> 
+              <Home />
             </PublicRoute>
           }/>
           <Route path='/login' element = {
@@ -40,11 +41,6 @@ function App() {
           <Route path="/events" element={
             <ProtectedRoute>
               <Events />
-            </ProtectedRoute>
-          } />
-          <Route path="/home" element={
-            <ProtectedRoute>
-              <Home />
             </ProtectedRoute>
           } />
           <Route path="/locations" element={
@@ -67,7 +63,9 @@ function App() {
               <LocationMap />
             </ProtectedRoute>
           } />
-          {/* <Route path="*" element={<NoMatch />} /> */}
+          <Route path="*" element={
+            <NoMatch />
+          } />
         </Routes>
       </BrowserRouter>
     </Suspense>

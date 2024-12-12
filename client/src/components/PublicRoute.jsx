@@ -5,7 +5,7 @@ export const PublicRoute = ({ children }) => {
     const token = localStorage.getItem('token');
 
     if (token) {
-        return <Navigate to="/home" />;
+        return <Navigate to="/" />;
     }
 
     return children;
