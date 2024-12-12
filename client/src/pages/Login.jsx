@@ -38,6 +38,7 @@ function Login({ setIsAuthenticated }) {
                         <input type="text" 
                         placeholder='Enter Username' 
                         autoComplete='off' 
+                        id='username'
                         name='username' 
                         className='form-control rounded-0' 
                         onChange={(e) => setUsername(e.target.value)}
@@ -49,6 +50,7 @@ function Login({ setIsAuthenticated }) {
                         </label>
                         <input type="password" 
                         placeholder='Enter Password' 
+                        id='password'
                         name='password' 
                         className='form-control rounded-0' 
                         onChange={(e) => setPassword(e.target.value)}

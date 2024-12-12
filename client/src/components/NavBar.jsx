@@ -1,10 +1,16 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import Button from 'react-bootstrap/Button';
 import './NavBar.css';
 
 export const MyNavbar = ({ isAuthenticated, setIsAuthenticated }) => {
+
+    const location = useLocation();
+    if (location.pathname === "/login") {
+        return(<></>)
+    }
+
     const navigate = useNavigate();
     
     const user = JSON.parse(localStorage.getItem('user'));
@@ -16,7 +22,7 @@ export const MyNavbar = ({ isAuthenticated, setIsAuthenticated }) => {
     const handleLogout = () => {
         setIsAuthenticated(false);
         localStorage.removeItem('token');
-        navigate('/');
+        navigate('/login');
     };
 
     return (

@@ -30,9 +30,7 @@ function App() {
         <MyNavbar isAuthenticated={isAuthenticated} setIsAuthenticated={setIsAuthenticated}/>
         <Routes>
           <Route path="/" element={
-            <PublicRoute>
               <Home />
-            </PublicRoute>
           }/>
           <Route path='/login' element = {
             <PublicRoute>
