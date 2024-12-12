@@ -16,7 +16,7 @@ if (process.argv.includes("--clear")) {
 const _locations = await Location.insertMany(locations);
 await Event.insertMany(
 	events.map((event) => {
-		const location = _locations.find(({ id }) => id === event.location);
+		const location = _locations.find(({ id }) => id === event.lid);
 		return { ...event, location: location._id };
 	}),
 );
