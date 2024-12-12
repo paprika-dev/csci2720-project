@@ -1,5 +1,5 @@
 import { lazy, Suspense, useState, useEffect } from 'react'
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import './App.css'
 import { ProtectedRoute } from './components/ProtectedRoute';
 import { PublicRoute } from './components/PublicRoute';
@@ -16,66 +16,80 @@ const Admin = lazy(() => import('./pages/Admin'))
 const NoMatch = lazy(() => import('./pages/NoMatch'))
 import 'bootstrap/dist/css/bootstrap.min.css';
 import AdminRoute from './components/AdminRoute';
+import { AnimatePresence } from "motion/react"
+import { PageTransition } from './components/PageTransition';
 
-function App() {
+function MyRoutes() {
+  const location = useLocation();
   const [isAuthenticated, setIsAuthenticated] = useState(!!localStorage.getItem('token'));
   const [isAdmin, setIsAdmin] = useState(() => {
     const user = JSON.parse(localStorage.getItem('user'));
     return user.isAdmin ? true : false;
   });
 
+  return(
+    <>
+    <MyNavbar isAuthenticated={isAuthenticated} setIsAuthenticated={setIsAuthenticated}/>
+    <AnimatePresence mode='wait'>
+      <Routes location={location} key={location.pathname}>
+        <Route path="/" element={
+            <Home />
+        }/>
+        <Route path='/login' element = {
+          <PublicRoute>
+            <Login setIsAuthenticated={setIsAuthenticated}/> 
+          </PublicRoute>
+        }/>
+        <Route path='/register' element={
+          <PublicRoute>
+            <Register/>
+          </PublicRoute>
+        }/>
+        <Route path="/events" element={
+          <ProtectedRoute>
+            <Events />
+          </ProtectedRoute>
+        } />
+        <Route path="/locations" element={
+          <ProtectedRoute>
+              <Locations />
+          </ProtectedRoute>
+        } />
+        <Route path="/locations/:locName" element={
+          <ProtectedRoute>
+            <SingleLocation />
+          </ProtectedRoute>
+        } />
+        <Route path="/favourites" element={
+          <ProtectedRoute>
+            <Favourites />
+          </ProtectedRoute>
+        } />
+        <Route path="/map" element={
+          <ProtectedRoute>
+            <LocationMap />
+          </ProtectedRoute>
+        } />
+        <Route path="/admin" element={
+          <AdminRoute>
+            <Admin />
+          </AdminRoute>
+        } />
+        <Route path="*" element={
+          <NoMatch />
+        } />
+      </Routes>
+    </AnimatePresence>
+    </>
+  )
+
+}
+
+function App() {
   return (
     <Suspense>
       <BrowserRouter>
-        <MyNavbar isAuthenticated={isAuthenticated} setIsAuthenticated={setIsAuthenticated}/>
-        <Routes>
-          <Route path="/" element={
-              <Home />
-          }/>
-          <Route path='/login' element = {
-            <PublicRoute>
-              <Login setIsAuthenticated={setIsAuthenticated}/> 
-            </PublicRoute>
-          }/>
-          <Route path='/register' element={
-            <PublicRoute>
-              <Register/>
-            </PublicRoute>
-          }/>
-          <Route path="/events" element={
-            <ProtectedRoute>
-              <Events />
-            </ProtectedRoute>
-          } />
-          <Route path="/locations" element={
-            <ProtectedRoute>
-              <Locations />
-            </ProtectedRoute>
-          } />
-          <Route path="/locations/:locName" element={
-            <ProtectedRoute>
-              <SingleLocation />
-            </ProtectedRoute>
-          } />
-          <Route path="/favourites" element={
-            <ProtectedRoute>
-              <Favourites />
-            </ProtectedRoute>
-          } />
-          <Route path="/map" element={
-            <ProtectedRoute>
-              <LocationMap />
-            </ProtectedRoute>
-          } />
-          <Route path="/admin" element={
-            <AdminRoute>
-              <Admin />
-            </AdminRoute>
-          } />
-          <Route path="*" element={
-            <NoMatch />
-          } />
-        </Routes>
+          <MyRoutes />
       </BrowserRouter>
     </Suspense>
   )
