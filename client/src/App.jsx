@@ -41,7 +41,7 @@ function MyRoutes() {
     <AnimatePresence mode='wait'>
       <Routes location={location} key={location.pathname}>
         <Route path="/" element={
-            <Home />
+          <Home />
         }/>
         <Route path='/login' element = {
           <PublicRoute>
@@ -53,7 +53,7 @@ function MyRoutes() {
             <Register/>
           </PublicRoute>
         }/>
-        <Route path="/events" element={
+        {/* <Route path="/events" element={
           <ProtectedRoute>
             <Events />
           </ProtectedRoute>
@@ -77,6 +77,31 @@ function MyRoutes() {
           <ProtectedRoute>
             <LocationMap />
           </ProtectedRoute>
+        } /> */}
+        <Route path="/events" element={
+          <PublicRoute>
+            <Events />
+          </PublicRoute>
+        } />
+        <Route path="/locations" element={
+          <PublicRoute>
+              <Locations />
+          </PublicRoute>
+        } />
+        <Route path="/locations/:locName" element={
+          <PublicRoute>
+            <SingleLocation />
+          </PublicRoute>
+        } />
+        <Route path="/favourites" element={
+          <PublicRoute>
+            <Favourites />
+          </PublicRoute>
+        } />
+        <Route path="/map" element={
+          <PublicRoute>
+            <LocationMap />
+          </PublicRoute>
         } />
         <Route path="/admin" element={
           <AdminRoute>
