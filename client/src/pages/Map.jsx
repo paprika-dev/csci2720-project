@@ -8,7 +8,7 @@ export default function LocationMap() {
     const [POIs, setPOIs] = useState([])
 
     // get request to fetch location data
-    const locDataURL = "http://127.0.0.1:5000/front_end_testing_all_locations" // to be changed
+    const locDataURL = import.meta.env.VITE_REACT_APP_BACKEND_URL + "/locations"
     useEffect(() => {
         fetch(locDataURL)
         .then(res=>res.json())
@@ -20,9 +20,12 @@ export default function LocationMap() {
             <APIProvider apiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}>
                 <div style={{height:"65vh", width:"70vw"}}>
                     <Map
-                        defaultZoom={11.5}
-                        defaultCenter={ { lat: 22.356514, lng: 114.136253 } }
+                        defaultZoom={11.1}
+                        defaultCenter={ { lat: 22.402769627852184, lng: 114.12232266491166 } }
                         mapId={import.meta.env.VITE_ALL_LOCATIONS_MAP_ID}
+                        onCameraChanged={ (ev) =>
+                            console.log('camera changed:', ev.detail.center, 'zoom:', ev.detail.zoom)
+                          }
                     >
                             <PoiMarkers pois={POIs} />
                     </Map>

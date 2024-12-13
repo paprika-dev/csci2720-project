@@ -16,13 +16,13 @@ export const Comment = ({ cmts }) => {
     const useAvatar = (username) => avatars[username.charCodeAt(0) % 6]
     const [myComment, setMyComment] = useState("")
     const [comments, setComments] = useState([...cmts])
-    const username = JSON.parse(localStorage.getItem('user')).username
+    // const username = JSON.parse(localStorage.getItem('user')).username
     
     const handleSubmit = (e) => {
         e.preventDefault()
-        let s = [...comments]
-        s.unshift({"user": username, "comment": myComment})
-        setComments(s)
+        // let s = [...comments]
+        // s.unshift({"user": username, "comment": myComment})
+        // setComments(s)
         e.target.reset()
     }
 
