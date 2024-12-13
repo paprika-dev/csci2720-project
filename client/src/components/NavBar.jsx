@@ -1,22 +1,34 @@
+import { useState, useEffect } from 'react'
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import Button from 'react-bootstrap/Button';
 import './NavBar.css';
 
-export const MyNavbar = ({ isAuthenticated, setIsAuthenticated }) => {
+export const MyNavbar = ({ isAuthenticated, setIsAuthenticated, userInfo, setUserInfo }) => {
     const location = useLocation();
     const navigate = useNavigate();
     
-    const user = JSON.parse(localStorage.getItem('user'));
+    // const [userInfo, setUserInfo] = useState({ username: '', isAdmin: false });
+
+    useEffect(() => {
+        const user = JSON.parse(localStorage.getItem('user')) || { username: '', isAdmin: false };
+        setUserInfo(user);
+        //console.log(userInfo);
+    }, []);
+    
 
     const handleLogin = () => {
         navigate('/login');
     };
 
     const handleLogout = () => {
-        setIsAuthenticated(false);
+        console.log(`Before logout: ${JSON.stringify(userInfo)}`);
         localStorage.removeItem('token');
+        setIsAuthenticated(false);
+        localStorage.removeItem('user');
+        setUserInfo({ username: '', isAdmin: false });
+        console.log(`After logout: ${JSON.stringify(userInfo)}`);
         navigate('/');
     };
 
@@ -35,7 +47,7 @@ export const MyNavbar = ({ isAuthenticated, setIsAuthenticated }) => {
                     <Nav.Link as={Link} to="/locations">Locations</Nav.Link>
                     <Nav.Link as={Link} to="/favourites">Favourites</Nav.Link>
                     <Nav.Link as={Link} to="/events">Events</Nav.Link>
-                    {user.isAdmin && <Nav.Link as={Link} to="/admin">Admin</Nav.Link>}
+                    {userInfo.isAdmin ? <Nav.Link as={Link} to="/admin">Admin</Nav.Link> : null}
                 </Nav>
                 {!isAuthenticated &&
                 <Nav>
@@ -44,7 +56,7 @@ export const MyNavbar = ({ isAuthenticated, setIsAuthenticated }) => {
                 {isAuthenticated &&
                 <Nav>
                     <Navbar.Text className="me-4">
-                        {user.isAdmin ? `Admin: ${user.username}` : user.username}
+                        {userInfo.isAdmin ? `Admin: ${userInfo.username}` : userInfo.username}
                     </Navbar.Text>
                     <Button variant="outline-danger" onClick={handleLogout}>Logout</Button>
                 </Nav>}

@@ -22,14 +22,22 @@ import { PageTransition } from './components/PageTransition';
 function MyRoutes() {
   const location = useLocation();
   const [isAuthenticated, setIsAuthenticated] = useState(!!localStorage.getItem('token'));
-  const [isAdmin, setIsAdmin] = useState(() => {
-    const user = JSON.parse(localStorage.getItem('user'));
-    return user.isAdmin ? true : false;
-  });
+  // const [isUser, setIsUser] = useState(() => {
+  //   const isUser = JSON.parse(localStorage.getItem('user')) || { username: '', isAdmin: false };
+  //   return isUser.isAdmin ? true : false;
+  // });
+  
+  const [userInfo, setUserInfo] = useState({ username: '', isAdmin: false });
+
+  useEffect(() => {
+      const user = JSON.parse(localStorage.getItem('user')) || { username: '', isAdmin: false };
+      setUserInfo(user);
+      //console.log(userInfo);
+  }, []);
 
   return(
     <>
-    <MyNavbar isAuthenticated={isAuthenticated} setIsAuthenticated={setIsAuthenticated}/>
+    <MyNavbar isAuthenticated={isAuthenticated} setIsAuthenticated={setIsAuthenticated} userInfo={userInfo} setUserInfo={setUserInfo}/>
     <AnimatePresence mode='wait'>
       <Routes location={location} key={location.pathname}>
         <Route path="/" element={
@@ -37,7 +45,7 @@ function MyRoutes() {
         }/>
         <Route path='/login' element = {
           <PublicRoute>
-            <Login setIsAuthenticated={setIsAuthenticated}/> 
+            <Login setIsAuthenticated={setIsAuthenticated} setUserInfo={setUserInfo}/> 
           </PublicRoute>
         }/>
         <Route path='/register' element={

@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
 
-function Login({ setIsAuthenticated }) {    
+function Login({ setIsAuthenticated, setUserInfo }) {    
 
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -19,6 +19,8 @@ function Login({ setIsAuthenticated }) {
             localStorage.setItem('token', token);
             localStorage.setItem('user', JSON.stringify(user));
             setIsAuthenticated(true);
+            setUserInfo(user)
+            console.log(user)
             navigate('/');
         } catch (error) {
             setError('Invalid username or password');
