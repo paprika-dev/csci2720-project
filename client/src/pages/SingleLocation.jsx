@@ -12,7 +12,7 @@ export default function SingleLocation() {
     const url = `https://www.google.com/maps/embed/v1/place?key=${import.meta.env.VITE_GOOGLE_MAPS_API_KEY}
                     &q=${locName}`
     
-    const locDataURL = `http://127.0.0.1:5000/front_end_testing_single_location/${params.locName}` // to be changed
+    const locDataURL = import.meta.env.VITE_REACT_APP_BACKEND_URL + "/locations/" + locName
     useEffect(() => {
         fetch(locDataURL)
         .then(res=>res.json())

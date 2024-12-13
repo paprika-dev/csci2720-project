@@ -54,8 +54,8 @@ export const LocationTable = ({ data, dataChanger }) => {
                     <tr key={i}>
                     <td>{row.id}</td>
                     <td><Link to={"/locations/"+linkURL(row.name)}>{row.name}</Link></td>
-                    <td>{row.evNum}</td>
-                    <td><HeartButton filled={row.isFav} clickFunc={()=>handleFavList(row.id, row.isFav)} /></td>
+                    <td>{row.numevents}</td>
+                    {/* <td><HeartButton filled={row.isFav} clickFunc={()=>handleFavList(row.id, row.isFav)} /></td> */}
                 </tr>
                 )})}
             </tbody>

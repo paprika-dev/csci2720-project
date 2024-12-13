@@ -8,11 +8,11 @@ import { User, Event, Comment, Location } from "./models.js";
 const { PORT, MONGO_URI, SECRET } = process.env;
 
 const app = express();
-require('dotenv').config();
+// import "dotenv/config.js";
 
-const authRoutes = require('./router/authRoute');
-const protectedRoutes = require('./router/protected');
-const adminRoutes = require('./router/adminRoute');
+// const authRoutes =  './router/authRoute';
+// const protectedRoutes = require('./router/protected');
+// const adminRoutes = require('./router/adminRoute');
 
 app.use(
 	json(),
@@ -225,11 +225,24 @@ app.get("/locations", async (_req, res) => {
 	return res.status(200).json(locations || []);
 });
 
-app.get("/locations/:id", async (req, res) => {
-	if (!mongoose.isValidObjectId(req.params.id)) {
-		return res.status(400).end();
-	}
-	const location = await Location.findById(req.params.id, "-__v").lean().exec();
+// app.get("/locations/:id", async (req, res) => {
+// 	if (!mongoose.isValidObjectId(req.params.id)) {
+// 		return res.status(400).end();
+// 	}
+// 	const location = await Location.findById(req.params.id, "-__v").lean().exec();
+// 	if (!location) {
+// 		return res.status(404).end();
+// 	}
+// 	const [events, comments] = await Promise.all([
+// 		Event.find({ location: location._id }, "-__v -location").lean().exec(),
+// 		Comment.find({ location: location._id }, "-__v -location").lean().exec(),
+// 	]);
+// 	return res.status(200).json({ ...location, events, comments });
+// });
+
+app.get("/locations/:name", async (req, res) => {
+	const reqname = req.params.name.replace(/-+/g,' ')
+	const location = await Location.findOne({ name: reqname }, "-__v").lean().exec();
 	if (!location) {
 		return res.status(404).end();
 	}

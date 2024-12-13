@@ -12,26 +12,29 @@ export default function Locations() {
     const [data, setData] = useState([])
     const [distance, setDistance] = useState(80)
     const [category, setCategory] = useState("all")
+
     
     // get request to fetch location data
-    const locDataURL = "http://127.0.0.1:5000/front_end_testing_all_locations" // to be changed
+    const locDataURL = import.meta.env.VITE_REACT_APP_BACKEND_URL + "/locations"
     useEffect(() => {
+        console.log(locDataURL)
         fetch(locDataURL)
         .then(res=>res.json())
-        .then(d=>{setData(d)})
+        .then(d=>{setData(d); console.log(d)})
     }, [])
 
-    const filteredData = useMemo(()=>
-        data.filter(loc => loc.name.toLowerCase().includes(query.toLowerCase()) && 
-                            (category == "all" ? 1 : loc.evCat.includes(category)) &&
-                            loc.distance < distance),
-    [data, query, category, distance])
+    const filteredData = data
+    // const filteredData = useMemo(()=>
+    //     data.filter(loc => loc.name.toLowerCase().includes(query.toLowerCase()) && 
+    //                         (category == "all" ? 1 : loc.evCat.includes(category)) &&
+    //                         loc.distance < distance),
+    // [data, query, category, distance])
     
-    const categories = [...new Set(data.flatMap(loc => loc.evCat))]
+    // const categories = [...new Set(data.flatMap(loc => loc.evCat))]
 
     return (
         <MyContainer>
-            <div className='d-flex align-items-center mb-3 gap-4'>
+            {/* <div className='d-flex align-items-center mb-3 gap-4'>
                 <div className='d-flex align-items-center gap-2 position-relative'>
                     <img src={distanceSVG} />
                     <Slider value={distance} stepSize={5} setValue={setDistance} tag={"< "+distance+" km"}></Slider>
@@ -50,7 +53,7 @@ export default function Locations() {
                     <label htmlFor="locSearch"><img src={searchSVG} /></label>
                     <Form.Control id="locSearch" value={query} onChange={e=>setQuery(e.target.value)}></Form.Control>
                 </div>
-            </div>
+            </div> */}
             <LocationTable data={filteredData} dataChanger={setData}/>
         </MyContainer>
     )

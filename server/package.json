@@ -8,7 +8,8 @@
     "import": "dotenvx run -- node datasets/import.js",
     "import:clear": "dotenvx run -- node datasets/import.js --clear",
     "start": "dotenvx run -- node server.js",
-    "start:watch": "dotenvx run -- node --watch server.js"
+    "start:watch": "dotenvx run -- node --watch server.js",
+    "test": "dotenvx run -- nodemon server.js"
   },
   "author": "",
   "license": "ISC",
@@ -19,7 +20,8 @@
     "express": "^4.21.1",
     "express-session": "^1.18.1",
     "jsonwebtoken": "^9.0.2",
-    "mongoose": "^8.8.3"
+    "mongoose": "^8.8.3",
+    "nodemon": "^3.1.7"
   },
   "devDependencies": {
     "@biomejs/biome": "1.9.4",

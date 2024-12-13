@@ -6,19 +6,19 @@ import './NavBar.css';
 
 export const MyNavbar = ({ isAuthenticated, setIsAuthenticated }) => {
     const location = useLocation();
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
     
-    const user = JSON.parse(localStorage.getItem('user'));
+    // const user = JSON.parse(localStorage.getItem('user'));
 
-    const handleLogin = () => {
-        navigate('/login');
-    };
+    // const handleLogin = () => {
+    //     navigate('/login');
+    // };
 
-    const handleLogout = () => {
-        setIsAuthenticated(false);
-        localStorage.removeItem('token');
-        navigate('/');
-    };
+    // const handleLogout = () => {
+    //     setIsAuthenticated(false);
+    //     localStorage.removeItem('token');
+    //     navigate('/');
+    // };
 
     // hide navbar on login page and register page
     if (location.pathname === "/login" || location.pathname === "/register") {
@@ -35,9 +35,9 @@ export const MyNavbar = ({ isAuthenticated, setIsAuthenticated }) => {
                     <Nav.Link as={Link} to="/locations">Locations</Nav.Link>
                     <Nav.Link as={Link} to="/favourites">Favourites</Nav.Link>
                     <Nav.Link as={Link} to="/events">Events</Nav.Link>
-                    {user.isAdmin && <Nav.Link as={Link} to="/admin">Admin</Nav.Link>}
+                    {/* {user.isAdmin && <Nav.Link as={Link} to="/admin">Admin</Nav.Link>} */}
                 </Nav>
-                {!isAuthenticated &&
+                {/* {!isAuthenticated &&
                 <Nav>
                     <Button variant="outline-success" onClick={handleLogin}>Login</Button>
                 </Nav>}
@@ -47,7 +47,7 @@ export const MyNavbar = ({ isAuthenticated, setIsAuthenticated }) => {
                         {user.isAdmin ? `Admin: ${user.username}` : user.username}
                     </Navbar.Text>
                     <Button variant="outline-danger" onClick={handleLogout}>Logout</Button>
-                </Nav>}
+                </Nav>} */}
             </Navbar.Collapse>
         </Navbar>
     );

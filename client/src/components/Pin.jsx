@@ -2,14 +2,14 @@ import { AdvancedMarker, Pin, InfoWindow, useAdvancedMarkerRef } from '@vis.gl/r
 import { useCallback, useState } from 'react';
 import { Link } from 'react-router-dom';
 
-const MarkerWithInfoWindow = ({position, locId, locName}) => {
+const MarkerWithInfoWindow = ({ position, name }) => {
   const [markerRef, marker] = useAdvancedMarkerRef();
   const [infoWindowShown, setInfoWindowShown] = useState(false);
 
   const handleMarkerClick = useCallback(() => setInfoWindowShown(isShown => !isShown), []);
   const handleClose = useCallback(() => setInfoWindowShown(false), []);
 
-  const locURL = "/locations/" + locName.replace(/\s+/g,'-')
+  const locURL = "/locations/" + name.replace(/\s+/g,'-')
 
   return (
     <>
@@ -21,7 +21,7 @@ const MarkerWithInfoWindow = ({position, locId, locName}) => {
       </AdvancedMarker>
       {infoWindowShown && (
         <InfoWindow anchor={marker} onClose={handleClose}>
-          <Link to={locURL}>{locName}</Link>
+          <Link to={locURL}>{name}</Link>
         </InfoWindow>
       )}
     </>
@@ -34,10 +34,9 @@ export const PoiMarkers = ({ pois }) => {
         {pois.map( (poi) => (
           <MarkerWithInfoWindow
             key={poi.id}
-            position={poi.location}
-            locName={poi.name}
-            locId={poi.id}>
-          </MarkerWithInfoWindow>
+            position={{"lat":poi.latitude, "lng": poi.longitude}}
+            name={poi.name} 
+          />
         ))}      
       </>
     );

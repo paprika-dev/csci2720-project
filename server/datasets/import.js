@@ -2,8 +2,8 @@ import mongoose from "mongoose";
 
 import { Event, Location } from "../models.js";
 
-import events from "./events.json" with { type: "json" };
-import locations from "./locations.json" with { type: "json" };
+import events from "./events.json" assert { type: "json" };
+import locations from "./locations.json" assert { type: "json" };
 
 const { MONGO_URI } = process.env;
 

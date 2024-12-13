@@ -21,10 +21,12 @@ import { PageTransition } from './components/PageTransition';
 
 function MyRoutes() {
   const location = useLocation();
-  const [isAuthenticated, setIsAuthenticated] = useState(!!localStorage.getItem('token'));
+  // const [isAuthenticated, setIsAuthenticated] = useState(!!localStorage.getItem('token'));
+  const [isAuthenticated, setIsAuthenticated] = useState(true);
   const [isAdmin, setIsAdmin] = useState(() => {
     const user = JSON.parse(localStorage.getItem('user'));
-    return user.isAdmin ? true : false;
+    // return user.isAdmin ? true : false;
+    return false
   });
 
   return(
