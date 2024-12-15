@@ -1,3 +1,4 @@
+import axios from '../api/axios';
 import Form from 'react-bootstrap/Form';
 import sendSVG from '../assets/send.svg'
 import commentSVG from '../assets/comment.svg'
@@ -8,21 +9,31 @@ import avatarSVG3 from '../assets/avatar-3.svg'
 import avatarSVG4 from '../assets/avatar-4.svg'
 import avatarSVG5 from '../assets/avatar-5.svg'
 import avatarSVG6 from '../assets/avatar-6.svg'
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import './Comment.css'
 
-export const Comment = ({ cmts }) => {
+export const Comment = ({ lid, cmts }) => {
+
+    // assign avatar icon based on username
     const avatars = [avatarSVG1, avatarSVG2, avatarSVG3, avatarSVG4, avatarSVG5, avatarSVG6]
     const useAvatar = (username) => avatars[username.charCodeAt(0) % 6]
+
     const [myComment, setMyComment] = useState("")
     const [comments, setComments] = useState([...cmts])
-    // const username = JSON.parse(localStorage.getItem('user')).username
+    const username = JSON.parse(localStorage.getItem('user')).username
     
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault()
-        // let s = [...comments]
-        // s.unshift({"user": username, "comment": myComment})
-        // setComments(s)
+
+        // add comment to database      
+        await axios.post('/comments', { lid: lid, text: myComment });
+        
+        // reflect change in client side 
+        let s = [...comments]
+        s.unshift({"user": {"username": username}, "text": myComment})
+        setComments(s)
+        
+        // clear form
         e.target.reset()
     }
 
@@ -31,11 +42,11 @@ export const Comment = ({ cmts }) => {
             <p><img src={commentSVG} />&nbsp;&nbsp;Comments</p>
             <div className='pt-1 pb-2 px-2 overflow-auto' style={{maxHeight: "30vh"}}>
                 {comments.length == 0 && <p>No user comments</p>}
-                {comments && comments.map(comment => {
+                {comments && comments.map((comment, i) => {
                     return(
-                        <div key={comment.user} className='d-flex flex-column user-comment px-3 py-2 mb-3'>
-                            <p className='mb-1 comment-username'><img src={useAvatar(comment.user)} /> {comment.user}</p>
-                            <p className='mb-0 comment-text'>{comment.comment}</p>
+                        <div key={i} className='d-flex flex-column user-comment px-3 py-2 mb-3'>
+                            <p className='mb-1 comment-username'><img src={useAvatar(comment.user.username)} /> {comment.user.username}</p>
+                            <p className='mb-0 comment-text'>{comment.text}</p>
                         </div>
                     )
                 })}

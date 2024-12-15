@@ -1,24 +1,29 @@
+import axios from '../api/axios';
 import { useParams } from "react-router-dom"
 import { Comment } from "../components/Comment"
 import { MyContainer } from "../components/MyContainer"
-import { useState, useEffect, Suspense } from "react"
+import { useState, useEffect } from "react"
 
 export default function SingleLocation() {
     const params = useParams()
     const locName = params.locName.replace(/-+/g,' ')
+    const googleMapURL = `https://www.google.com/maps/embed/v1/place?key=${import.meta.env.VITE_GOOGLE_MAPS_API_KEY}&q=${locName}`
     const [data, setData] = useState([])
     const [loaded, setLoaded] = useState(false)
 
-    const url = `https://www.google.com/maps/embed/v1/place?key=${import.meta.env.VITE_GOOGLE_MAPS_API_KEY}
-                    &q=${locName}`
-    
-    const locDataURL = import.meta.env.VITE_REACT_APP_BACKEND_URL + "/locations/" + locName
-    useEffect(() => {
-        fetch(locDataURL)
-        .then(res=>res.json())
-        .then(d=>{setData(d); setLoaded(true)})
-    }, [])
+    const fetchLocationData = async () => {
+        try {
+            const response = await axios.get('/locations/' + locName);
+            setData(response.data);
+            setLoaded(true);
+        } catch (error) {
+            console.error('There was an error fetching the location data!', error);
+        }
+    };
 
+    useEffect(() => {
+        fetchLocationData();
+    }, []);
 
     return (
         <MyContainer>
@@ -30,11 +35,11 @@ export default function SingleLocation() {
                         loading="lazy"
                         allowFullScreen
                         referrerPolicy="no-referrer-when-downgrade"
-                        src={url}>
+                        src={googleMapURL}>
                     </iframe> 
                 </div>
-                {/* {!loaded && <div>loading...</div>} */}
-                {loaded && <Comment cmts={data.comments ? data.comments : []}></Comment>}
+                {!loaded && <div>Loading comments...</div>}
+                {loaded && <Comment lid={data._id} cmts={data.comments}></Comment>}
             </div>
         </MyContainer>
     )
