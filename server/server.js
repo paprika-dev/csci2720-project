@@ -42,11 +42,11 @@ const handleAdminGuard = (req, res, next) => {
 	});
 };
 
-const anyMissing = (...a) => a.some((v) => v === undefined);
+const isAnyMissing = (...a) => a.some((v) => v === undefined);
 
 app.post("/login", async (req, res) => {
 	const { username, password } = req.body;
-	if (anyMissing(username, password)) {
+	if (isAnyMissing(username, password)) {
 		return res.status(400).end();
 	}
 	const user = await User.findOne(
@@ -69,6 +69,16 @@ app.post("/logout", handleAuthCheck, (req, res) => {
 	return res.status(200).end();
 });
 
+app.put("/username", handleAuthCheck, async (req, res) => {
+	const { username } = req.body;
+	if (isAnyMissing(username)) {
+		return res.status(400).end();
+	}
+	await User.findByIdAndUpdate(req.session.uid, { username }).exec();
+	req.session.username = username;
+	return res.status(200).end();
+});
+
 app.get("/events", async (_req, res) => {
 	const events = await Event.find({}, "-__v")
 		.lean()
@@ -80,7 +90,7 @@ app.post("/events", handleAdminGuard, async (req, res) => {
 	const { title, predate, progtime, desc, agelimit, price, presenterorg, lid } =
 		req.body;
 	if (
-		anyMissing(
+		isAnyMissing(
 			title,
 			predate,
 			progtime,
@@ -115,7 +125,7 @@ app.put("/events/:id", handleAdminGuard, async (req, res) => {
 	const { title, predate, progtime, desc, agelimit, price, presenterorg, lid } =
 		req.body;
 	if (
-		anyMissing(
+		isAnyMissing(
 			title,
 			predate,
 			progtime,
@@ -172,7 +182,7 @@ app.get("/users", handleAdminGuard, async (_req, res) => {
 
 app.post("/users", handleAdminGuard, async (req, res) => {
 	const { username, password, admin } = req.body;
-	if (anyMissing(username, password, admin)) {
+	if (isAnyMissing(username, password, admin)) {
 		return res.status(400).end();
 	}
 	const user = await User.exists({ username }).exec();
@@ -186,7 +196,7 @@ app.post("/users", handleAdminGuard, async (req, res) => {
 app.put("/users/:id", handleAdminGuard, async (req, res) => {
 	const { username, password, admin } = res.body;
 	if (
-		anyMissing(username, password, admin) ||
+		isAnyMissing(username, password, admin) ||
 		!mongoose.isValidObjectId(req.params.id)
 	) {
 		return res.status(400).end();
@@ -257,7 +267,7 @@ app.get("/locations/:name", async (req, res) => {
 
 app.post("/comments", handleAuthCheck, async (req, res) => {
 	const { lid, text } = req.body;
-	if (anyMissing(text) || !mongoose.isValidObjectId(lid)) {
+	if (isAnyMissing(text) || !mongoose.isValidObjectId(lid)) {
 		return res.status(400).end();
 	}
 	const location = await Location.exists({ _id: lid }).exec();
