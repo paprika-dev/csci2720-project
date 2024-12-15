@@ -42,7 +42,7 @@ export const EventGrid = ({ data }) => {
                                     <strong>Date/Time:</strong> {event.predate}<br />
                                     <strong>Program Time:</strong> {event.progtime}<br />
                                     <strong>Presenter:</strong> {event.presenterorg}<br />
-                                    <strong>Price:</strong> {event.price}<br />
+                                    <strong>Price:</strong> {event.price ? event.price: "Free"}<br />
                                     <strong>Agelimit:</strong> {event.agelimit ? event.agelimit: "-"}<br />
                                     <strong>Description:</strong> {event.desc ? event.desc: "-"}<br />
                                     <strong>Location:</strong>
