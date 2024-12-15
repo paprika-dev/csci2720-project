@@ -327,11 +327,11 @@ app.post("/favourites", handleAuthCheck, async (req, res) => {
 	return res.status(201).end();
 });
 
-app.delete("/favourites", handleAuthCheck, async (req, res) => {
-	if (!mongoose.isValidObjectId(req.body.id)) {
+app.delete("/favourites/:id", handleAuthCheck, async (req, res) => {
+	if (!mongoose.isValidObjectId(req.params.id)) {
 		return res.status(400).end();
 	}
-	const location = await Location.exists({ _id: req.body.id }).exec();
+	const location = await Location.exists({ _id: req.params.id }).exec();
 	if (!location) {
 		return res.status(404).end();
 	}

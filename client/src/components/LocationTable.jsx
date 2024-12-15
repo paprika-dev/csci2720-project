@@ -1,3 +1,4 @@
+import axios from '../api/axios';
 import { useState } from "react"
 import { Link } from "react-router-dom"
 import { HeartButton } from "./HeartButton"
@@ -9,22 +10,22 @@ export const LocationTable = ({ data, dataChanger }) => {
     const [sort, setSort] = useState(-1)
     
     const handleSort = () => {
-        const sortedLocData = [...data].sort((a, b) => {return sort * (a.evNum - b.evNum)})
+        const sortedLocData = [...data].sort((a, b) => {return sort * (a.numevents - b.numevents)})
         dataChanger(sortedLocData)
         setSort(sort * -1)
-        console.log(sortedLocData)
     }
     
     const handleFavList = async (i, isFav) => {
         // add to or remove from list of favourite locations
         if (isFav) {
-            await axios.delete('/favourites', { id: i });
+            await axios.delete('/favourites/' + i);
+
         } else {
             await axios.post('/favourites', { id: i });
         }
 
         // reflect change in client side
-        const targetIndex = data.findIndex(loc => loc.id == i)
+        const targetIndex = data.findIndex(loc => loc._id == i)
         const newData = [...data]
         newData[targetIndex].isFav = !newData[targetIndex].isFav
         dataChanger(newData)
@@ -51,7 +52,7 @@ export const LocationTable = ({ data, dataChanger }) => {
                     <td>{row.id}</td>
                     <td><Link to={"/locations/"+linkURL(row.name)}>{row.name}</Link></td>
                     <td>{row.numevents}</td>
-                    <td><HeartButton filled={row.isFav} clickFunc={()=>handleFavList(row.id, row.isFav)} /></td>
+                    <td><HeartButton filled={row.isFav} clickFunc={()=>handleFavList(row._id, row.isFav)} /></td>
                 </tr>
                 )})}
             </tbody>

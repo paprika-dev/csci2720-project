@@ -19,7 +19,6 @@ export default function Locations() {
         try {
             const response = await axios.get('/locations');
             setData(response.data);
-            console.log(response.data)
         } catch (error) {
             console.error('There was an error fetching the location data!', error);
         }
@@ -29,19 +28,20 @@ export default function Locations() {
         fetchLocationsData();
     }, []);
 
-
-    const filteredData = data
-    // const filteredData = useMemo(()=>
+    const filteredData = useMemo(()=>
+            data.filter(loc => loc.name.toLowerCase().includes(query.toLowerCase()) && 
+                                (category == "all" ? 1 : loc.category.includes(category))),
+    [data, query, category])
     //     data.filter(loc => loc.name.toLowerCase().includes(query.toLowerCase()) && 
-    //                         (category == "all" ? 1 : loc.evCat.includes(category)) &&
+    //                         (category == "all" ? 1 : loc.category.includes(category)) &&
     //                         loc.distance < distance),
     // [data, query, category, distance])
     
-    // const categories = [...new Set(data.flatMap(loc => loc.evCat))]
+    const categories = [...new Set(data.flatMap(loc => loc.category))]
 
     return (
         <MyContainer>
-            {/* <div className='d-flex align-items-center mb-3 gap-4'>
+            <div className='d-flex align-items-center mb-3 gap-4'>
                 <div className='d-flex align-items-center gap-2 position-relative'>
                     <img src={distanceSVG} />
                     <Slider value={distance} stepSize={5} setValue={setDistance} tag={"< "+distance+" km"}></Slider>
@@ -60,7 +60,7 @@ export default function Locations() {
                     <label htmlFor="locSearch"><img src={searchSVG} /></label>
                     <Form.Control id="locSearch" value={query} onChange={e=>setQuery(e.target.value)}></Form.Control>
                 </div>
-            </div> */}
+            </div>
             <LocationTable data={filteredData} dataChanger={setData}/>
         </MyContainer>
     )
