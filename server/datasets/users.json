@@ -5,7 +5,37 @@
         "admin": true
     },
     {
-        "username": "Test User",
+        "username": "Rick",
+        "password": "1234",
+        "admin": false,
+        "favourites": [
+            "36310035",
+            "87616551",
+            "87510008"
+        ]
+    },
+    {
+        "username": "Morty",
+        "password": "1234",
+        "admin": false,
+        "favourites": [
+            "36310035",
+            "87616551",
+            "87510008"
+        ]
+    },
+    {
+        "username": "Wendy",
+        "password": "1234",
+        "admin": false,
+        "favourites": [
+            "36310035",
+            "87616551",
+            "87510008"
+        ]
+    },
+    {
+        "username": "Uncle Sam",
         "password": "1234",
         "admin": false,
         "favourites": [
