@@ -7,7 +7,8 @@ import { Modal, Button, Form } from 'react-bootstrap';
 const Admin = () => {
     const [users, setUsers] = useState([]);
     const [formData, setFormData] = useState({ username: '', password: '', confirmPassword: '', admin: false });
-    const [error, setError] = useState('');
+    const [createError, setCreateError] = useState('');
+    const [editError, setEditError] = useState('');
     const [showModal, setShowModal] = useState(false);
     const [editUserId, setEditUserId] = useState(null);
 
@@ -32,19 +33,21 @@ const Admin = () => {
     const handleCreate = async (e) => {
         e.preventDefault();
         if (formData.password !== formData.confirmPassword) {
-            setError('Passwords do not match');
+            setCreateError('Passwords do not match');
             return;
         }
         try {
             await axios.post('/users', { username: formData.username, password: formData.password, admin: formData.admin });
             alert('User registered successfully');
             fetchUsers();
+            setFormData({ username: '', password: '', confirmPassword: '', admin: false });
+            setCreateError('');
         } catch (error) {
             console.error(error);
             if (error.response && error.response.status === 409) {
-                setError('User already exists');
+                setCreateError('User already exists');
             } else {
-                setError(error.response.data.error || 'An error occurred');
+                setCreateError(error.response.data.error || 'An error occurred');
             }
         }
     };
@@ -68,7 +71,7 @@ const Admin = () => {
 
     const handleUpdate = async () => {
         if (formData.password !== formData.confirmPassword) {
-            setError('Passwords do not match');
+            setEditError('Passwords do not match');
             return;
         }
         try {
@@ -76,14 +79,15 @@ const Admin = () => {
             alert('User updated successfully');
             fetchUsers();
             setShowModal(false);
+            setEditError('');
         } catch (error) {
             console.error(error);
             if (error.response && error.response.status === 409) {
-                setError('User already exists');
+                setEditError('User already exists');
             } else if (error.response && error.response.status === 400) {
-                setError('Invalid input');
+                setEditError('Invalid input');
             } else {
-                setError(error.response.data.error || 'An error occurred');
+                setEditError(error.response.data.error || 'An error occurred');
             }
         }
     };
@@ -119,7 +123,7 @@ const Admin = () => {
                     </table>
                 </div>
                 <h2 className="mt-5">Create New User</h2>
-                <form onSubmit={handleCreate} className="p-4 border rounded bg-light">
+                <form onSubmit={(e) => { handleCreate(e); setCreateError(''); }} className="p-4 border rounded bg-light">
                     <div className="mb-1">
                         <label htmlFor="username"><strong>Username</strong></label>
                         <input
@@ -168,12 +172,12 @@ const Admin = () => {
                         />
                         <label className="form-check-label" htmlFor="admin">Admin</label>
                     </div>
-                    {error && <div className="alert alert-danger">{error}</div>}
+                    {createError && <div className="alert alert-danger">{createError}</div>}
                     <button type="submit" className="btn btn-primary">Create User</button>
                 </form>
             </div>
 
-            <Modal show={showModal} onHide={() => setShowModal(false)}>
+            <Modal show={showModal} onHide={() => { setShowModal(false); setEditError(''); }}>
                 <Modal.Header closeButton>
                     <Modal.Title>Edit User</Modal.Title>
                 </Modal.Header>
@@ -218,18 +222,19 @@ const Admin = () => {
                                 onChange={(e) => setFormData({ ...formData, admin: e.target.checked })}
                             />
                         </Form.Group>
-                        {error && <div className="alert alert-danger">{error}</div>}
+                        {editError && <div className="alert alert-danger">{editError}</div>}
                     </Form>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="secondary" onClick={() => setShowModal(false)}>
+                    <Button variant="secondary" onClick={() => { setShowModal(false); setEditError(''); }}>
                         Close
                     </Button>
                     <Button variant="primary" onClick={() => {
                         if (!formData.username || !formData.password) {
-                            setError('Username and Password cannot be empty');
+                            setEditError('Username and Password cannot be empty');
                         } else {
                             handleUpdate();
+                            setEditError('');
                         }
                     }}>
                         Save Changes

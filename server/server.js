@@ -204,8 +204,8 @@ app.put("/users/:id", handleAdminGuard, async (req, res) => {
 	) {
 		return res.status(400).end();
 	}
-	const existingUser = await User.exists({ username }).exec();
-	if (existingUser) {
+	const existingUser = await User.findOne({ username }).exec();
+	if (existingUser && existingUser._id.toString() !== req.params.id) {
 		return res.status(409).end();
 	}
 	const user = await User.findByIdAndUpdate(
