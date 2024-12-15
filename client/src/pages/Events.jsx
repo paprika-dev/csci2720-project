@@ -3,17 +3,16 @@ import Carousel from 'react-bootstrap/Carousel';
 import { EventGrid } from '../components/EventGrid';
 import { MyContainer } from '../components/MyContainer';
 import Form from 'react-bootstrap/Form';
+import Pagination from 'react-bootstrap/Pagination'; // Import Pagination component
 import filterSVG from '../assets/filter.svg';
 import searchSVG from '../assets/search.svg';
-import distanceSVG from '../assets/distance.svg';
-import { Slider } from '../components/Slider';
 
 export default function Events() {
     const [query, setQuery] = useState("");
     const [data, setData] = useState([]);
-    const [distance, setDistance] = useState(50);
-    const [category, setCategory] = useState("all");
-    
+    const [currentPage, setCurrentPage] = useState(1); // Track the current page
+    const [itemsPerPage] = useState(6); // Number of events per page
+
     // Fetch event data
     const eventsDataURL = "http://127.0.0.1:5000/front_end_testing_all_events"; // to be updated
     useEffect(() => {
@@ -23,55 +22,31 @@ export default function Events() {
     }, []);
 
     // Filter events based on inputs
-   
     const filteredData = useMemo(() =>
         data.filter(event => {
             const eventTitle = event.title?.toLowerCase() || ""; // Safely convert to lowercase
             const searchQuery = query?.toLowerCase() || ""; // Safely convert to lowercase
     
-            return (
-                eventTitle.includes(searchQuery) &&
-                (category === "all" ? true : event.category?.includes(category)) &&
-                event.distance <= distance
-            );
+            return eventTitle.includes(searchQuery);
         }),
-    [data, query, category, distance]);
-    const categories = [...new Set(data.flatMap(event => event.category))];
+    [data, query]);
+
+    // Calculate the paginated data
+    const paginatedData = useMemo(() => {
+        const startIndex = (currentPage - 1) * itemsPerPage; // Start index of current page
+        const endIndex = startIndex + itemsPerPage; // End index of current page
+        return filteredData.slice(startIndex, endIndex); // Get the events for the current page
+    }, [filteredData, currentPage, itemsPerPage]);
+
+    // Calculate total number of pages
+    const totalPages = Math.ceil(filteredData.length / itemsPerPage);
 
     return (
         <MyContainer>
             {/* Top Banner */}
-            <Carousel>
-                {data.slice(0, 5).map(event => (
-                    <Carousel.Item key={event.id}>
-                        <img img width={800} height={200}
-                            className="d-block img-responsive border border-danger"
-                            src={event.thumbnail}
-                            alt={event.title}
-                        />
-                        <Carousel.Caption>
-                            <h3  class="border bg-success fs-6" >{event.title}</h3>
-                            <p  class="border bg-success text-wrap fs-6" >{event.description}</p>
-                        </Carousel.Caption>
-                    </Carousel.Item>
-                ))}
-            </Carousel>
-
+          
             {/* Filters */}
             <div className="d-flex align-items-center mb-3 gap-4">
-                <div className="d-flex align-items-center gap-2 position-relative">
-                    <img src={distanceSVG} alt="Distance" />
-                    <Slider value={distance} stepSize={5} setValue={setDistance} tag={`< ${distance} km`}></Slider>
-                </div>
-                <div className="d-flex align-items-center gap-2">
-                    <label htmlFor="catSelect"><img src={filterSVG} alt="Filter" /></label>
-                    <Form.Select id="catSelect" onChange={e => setCategory(e.target.value)}>
-                        <option key="all" value="all">All categories</option>
-                        {categories.map(cat => (
-                            <option key={cat} value={cat}>{cat}</option>
-                        ))}
-                    </Form.Select>
-                </div>
                 <div className="d-flex align-items-center gap-2">
                     <label htmlFor="eventSearch"><img src={searchSVG} alt="Search" /></label>
                     <Form.Control id="eventSearch" value={query} onChange={e => setQuery(e.target.value)} />
@@ -79,7 +54,36 @@ export default function Events() {
             </div>
 
             {/* Event Grid */}
-            <EventGrid data={filteredData} />
+            <EventGrid data={paginatedData} />
+
+            {/* Pagination */}
+            {totalPages > 1 && (
+                <div className="d-flex justify-content-center mt-4">
+                    <Pagination>
+                        <Pagination.Prev
+                            onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                            disabled={currentPage === 1}
+                        >
+                            Previous
+                        </Pagination.Prev>
+                        {Array.from({ length: totalPages }, (_, index) => (
+                            <Pagination.Item
+                                key={index + 1}
+                                active={currentPage === index + 1}
+                                onClick={() => setCurrentPage(index + 1)}
+                            >
+                                {index + 1}
+                            </Pagination.Item>
+                        ))}
+                        <Pagination.Next
+                            onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+                            disabled={currentPage === totalPages}
+                        >
+                            Next
+                        </Pagination.Next>
+                    </Pagination>
+                </div>
+            )}
         </MyContainer>
     );
 }
