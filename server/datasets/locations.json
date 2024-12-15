@@ -3,60 +3,80 @@
         "id": "3110031",
         "latitude": "22.501639",
         "longitude": "114.128911",
-        "name": "North District Town Hall (Auditorium)"
+        "name": "North District Town Hall (Auditorium)",
+        "category": "Auditorium",
+        "thumbnail": "https://www.lcsd.gov.hk/en/ndth/common/images/Template%20Landing/Scrollable%20menu/Image/NDTH_Auditorium.jpg"
     },
     {
         "id": "36310035",
         "latitude": "22.38136",
         "longitude": "114.18990",
-        "name": "Sha Tin Town Hall (Auditorium)"
+        "name": "Sha Tin Town Hall (Auditorium)",
+        "category": "Auditorium",
+        "thumbnail": "https://www.lcsd.gov.hk/en/stth/common/images/Template%203/Image/AUD/STTH%20Auditorium4.jpg"
     },
     {
         "id": "50110015",
         "latitude": "22.29386",
         "longitude": "114.17053",
-        "name": "Hong Kong Cultural Centre (Grand Theatre)"
+        "name": "Hong Kong Cultural Centre (Grand Theatre)",
+        "category": "Auditorium",
+        "thumbnail": "https://www.lcsd.gov.hk/en/hkcc/common/images/template3/Grand%20Theatre/facilities_grand_theatre_1.jpg"
     },
     {
         "id": "75010017",
         "latitude": "22.285056",
         "longitude": "114.222075",
-        "name": "Hong Kong Film Archive (Cinema)"
+        "name": "Hong Kong Film Archive (Cinema)",
+        "category": "Cinema",
+        "thumbnail": "https://www.filmarchive.gov.hk/image/journal/article-27330227.jpeg"
     },
     {
         "id": "76810049",
         "latitude": "22.391810",
         "longitude": "113.976771",
-        "name": "Tuen Mun Town Hall (Cultural Activities Hall)"
+        "name": "Tuen Mun Town Hall (Cultural Activities Hall)",
+        "category": "Hall",
+        "thumbnail": "https://www.lcsd.gov.hk/en/tmth/common/images/facilities/CA_3_408.jpg"
     },
     {
         "id": "87210046",
         "latitude": "22.37109",
         "longitude": "114.11277",
-        "name": "Tsuen Wan Town Hall (Cultural Activities Hall)"
+        "name": "Tsuen Wan Town Hall (Cultural Activities Hall)",
+        "category": "Hall",
+        "thumbnail": "https://www.lcsd.gov.hk/en/twth/common/images/2020/40a/s6/17.jpg"
     },
     {
         "id": "87110120",
         "latitude": "22.35665",
         "longitude": "114.12623",
-        "name": "Kwai Tsing Theatre (Lecture Room)"
+        "name": "Kwai Tsing Theatre (Lecture Room)",
+        "category": "Lecture Room",
+        "thumbnail": "https://www.lcsd.gov.hk/en/ktt/common/images/2015/10/Photo_13.jpg"
     },
     {
         "id": "87310362",
         "latitude": "22.44152",
         "longitude": "114.02289",
-        "name": "Yuen Long Theatre (Dance Studio)"
+        "name": "Yuen Long Theatre (Dance Studio)",
+        "category": "Dance Studio",
+        "thumbnail": "https://www.lcsd.gov.hk/en/ylt/common/images/2024/ds/ds1.jpg"
     },
     {
         "id": "87510008",
         "latitude": "22.282279",
         "longitude": "114.161545",
-        "name": "Hong Kong City Hall (Concert Hall)"
+        "name": "Hong Kong City Hall (Concert Hall)",
+        "category": "Hall",
+        "thumbnail": "https://www.lcsd.gov.hk/en/hkch/common/images/concert_hall/ConcertHall01_b.jpg"
     },
     {
         "id": "87616551",
         "latitude": "22.31368",
         "longitude": "114.18556",
-        "name": "Ko Shan Theatre (New Wing Auditorium)"
+        "name": "Ko Shan Theatre (New Wing Auditorium)",
+        "category": "Auditorium",
+        "thumbnail": "https://www.lcsd.gov.hk/en/kst/images/template_3/aud1.JPG"
     }
 ]

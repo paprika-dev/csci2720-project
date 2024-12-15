@@ -73,6 +73,13 @@ const LocationSchema = new mongoose.Schema({
 		required: true,
 		unique: true,
 	},
+	category: {
+		type: String,
+		required: true,
+	},
+	thumbnail: {
+		type: String,
+	},
 	latitude: {
 		type: Number,
 		required: true,
@@ -127,6 +134,7 @@ const CommentSchema = new mongoose.Schema({
 	created: {
 		type: Date,
 		required: true,
+		default: () => Date.now(),
 	},
 });
 

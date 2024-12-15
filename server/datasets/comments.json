@@ -1,0 +1,22 @@
+[
+    {
+        "username": "Rick",
+        "lid": "87616551",
+        "text": "Pickles!"
+    },
+    {
+        "username": "Morty",
+        "lid": "76810049",
+        "text": "I am not going here again!"
+    },
+    {
+        "username": "Uncle Sam",
+        "lid": "76810049",
+        "text": "Amazing audio, splendid performance."
+    },
+    {
+        "username": "Wendy",
+        "lid": "76810049",
+        "text": "Convenient location."
+    }
+]
