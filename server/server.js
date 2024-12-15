@@ -241,8 +241,10 @@ app.get("/locations", async (_req, res) => {
 // });
 
 app.get("/locations/:name", async (req, res) => {
-	const reqname = req.params.name.replace(/-+/g,' ')
-	const location = await Location.findOne({ name: reqname }, "-__v").lean().exec();
+	const reqname = req.params.name.replace(/-+/g, " ");
+	const location = await Location.findOne({ name: reqname }, "-__v")
+		.lean()
+		.exec();
 	if (!location) {
 		return res.status(404).end();
 	}
@@ -265,7 +267,6 @@ app.post("/comments", handleAuthCheck, async (req, res) => {
 	await Comment.create({
 		user: req.session.uid,
 		location: location._id,
-		created: Date.now(),
 		text,
 	});
 	return res.status(201).end();
