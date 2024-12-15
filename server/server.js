@@ -233,13 +233,18 @@ app.delete("/users/:id", handleAdminGuard, async (req, res) => {
 	return res.status(200).end();
 });
 
-app.get("/locations", async (_req, res) => {
+app.get("/locations", handleAuthCheck, async (req, res) => {
 	const locations = await Location.find({}, "-__v")
 		.lean()
 		.populate("numevents")
 		.populate("numcomments")
 		.exec();
-	return res.status(200).json(locations || []);
+
+	const user = await User.findById(req.session.uid).populate("favourites")
+	const favouritesIds = user.favourites.map(loc => loc.id);
+	const locations_favcheck = locations.map(loc=>{return {...loc, isFav: favouritesIds.includes(loc.id)}})
+
+	return res.status(200).json(locations_favcheck || []);
 });
 
 // app.get("/locations/:id", async (req, res) => {
@@ -273,7 +278,7 @@ app.get("/locations/:name", async (req, res) => {
 		Comment
 			.find({ location: location._id }, "-__v -location")
 			.lean()
-			.populate("user", "-__v")
+			.populate("user", "username")
 			.sort({created: -1})
 			.exec(),
 	]);
@@ -300,16 +305,19 @@ app.post("/comments", handleAuthCheck, async (req, res) => {
 app.get("/favourites", handleAuthCheck, async (req, res) => {
 	const { favourites } = await User.findById(req.session.uid)
 		.lean()
-		.populate("favourites", "-__v")
+		.populate({
+			path: "favourites", 
+			populate:{ path: "numevents" }
+		})
 		.exec();
 	return res.status(200).json(favourites || []);
 });
 
 app.post("/favourites", handleAuthCheck, async (req, res) => {
-	if (!mongoose.isValidObjectId(req.query.id)) {
+	if (!mongoose.isValidObjectId(req.body.id)) {
 		return res.status(400).end();
 	}
-	const location = await Location.exists({ _id: req.query.id }).exec();
+	const location = await Location.exists({ _id: req.body.id }).exec();
 	if (!location) {
 		return res.status(404).end();
 	}
@@ -320,10 +328,10 @@ app.post("/favourites", handleAuthCheck, async (req, res) => {
 });
 
 app.delete("/favourites", handleAuthCheck, async (req, res) => {
-	if (!mongoose.isValidObjectId(req.query.id)) {
+	if (!mongoose.isValidObjectId(req.body.id)) {
 		return res.status(400).end();
 	}
-	const location = await Location.exists({ _id: req.query.id }).exec();
+	const location = await Location.exists({ _id: req.body.id }).exec();
 	if (!location) {
 		return res.status(404).end();
 	}

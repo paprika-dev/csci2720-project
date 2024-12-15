@@ -1,3 +1,4 @@
+import axios from '../api/axios';
 import { useState, useMemo, useEffect } from 'react';
 import Form from 'react-bootstrap/Form';
 import searchSVG from '../assets/search.svg'
@@ -14,14 +15,20 @@ export default function Locations() {
     const [category, setCategory] = useState("all")
 
     
-    // get request to fetch location data
-    const locDataURL = import.meta.env.VITE_REACT_APP_BACKEND_URL + "/locations"
+    const fetchLocationsData = async () => {
+        try {
+            const response = await axios.get('/locations');
+            setData(response.data);
+            console.log(response.data)
+        } catch (error) {
+            console.error('There was an error fetching the location data!', error);
+        }
+    };
+
     useEffect(() => {
-        console.log(locDataURL)
-        fetch(locDataURL)
-        .then(res=>res.json())
-        .then(d=>{setData(d); console.log(d)})
-    }, [])
+        fetchLocationsData();
+    }, []);
+
 
     const filteredData = data
     // const filteredData = useMemo(()=>

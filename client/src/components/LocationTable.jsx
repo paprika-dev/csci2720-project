@@ -17,16 +17,12 @@ export const LocationTable = ({ data, dataChanger }) => {
     
     const handleFavList = async (i, isFav) => {
         // add to or remove from list of favourite locations
-        const favListURL = "http://127.0.0.1:5000/front_end_testing_favlist/" // to be changed
+        if (isFav) {
+            await axios.delete('/favourites', { id: i });
+        } else {
+            await axios.post('/favourites', { id: i });
+        }
 
-        const res = await fetch(favListURL, {
-            method: isFav ? "DELETE" : "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                "locId": i
-            }),
-          })
-        
         // reflect change in client side
         const targetIndex = data.findIndex(loc => loc.id == i)
         const newData = [...data]
@@ -55,7 +51,7 @@ export const LocationTable = ({ data, dataChanger }) => {
                     <td>{row.id}</td>
                     <td><Link to={"/locations/"+linkURL(row.name)}>{row.name}</Link></td>
                     <td>{row.numevents}</td>
-                    {/* <td><HeartButton filled={row.isFav} clickFunc={()=>handleFavList(row.id, row.isFav)} /></td> */}
+                    <td><HeartButton filled={row.isFav} clickFunc={()=>handleFavList(row.id, row.isFav)} /></td>
                 </tr>
                 )})}
             </tbody>

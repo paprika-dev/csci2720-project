@@ -1,19 +1,24 @@
+import axios from '../api/axios';
 import { APIProvider, Map } from '@vis.gl/react-google-maps';
 import { PoiMarkers } from '../components/Pin.jsx';
 import { MyContainer } from '../components/MyContainer.jsx';
 import { useState, useEffect } from 'react';
 
 export default function LocationMap() {
-    
     const [POIs, setPOIs] = useState([])
 
-    // get request to fetch location data
-    const locDataURL = import.meta.env.VITE_REACT_APP_BACKEND_URL + "/locations"
+    const fetchLocationData = async () => {
+        try {
+            const response = await axios.get('/locations/');
+            setPOIs(response.data);
+        } catch (error) {
+            console.error('There was an error fetching the location data!', error);
+        }
+    };
+
     useEffect(() => {
-        fetch(locDataURL)
-        .then(res=>res.json())
-        .then(d=>{setPOIs(d)})
-    }, [])
+        fetchLocationData();
+    }, []);
 
     return (
         <MyContainer>

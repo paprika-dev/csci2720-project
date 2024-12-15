@@ -1,3 +1,4 @@
+import axios from '../api/axios';
 import { useState, useEffect, useMemo } from 'react';
 import { LocationTable } from '../components/LocationTable';
 import { MyContainer } from '../components/MyContainer';
@@ -5,22 +6,27 @@ import { MyContainer } from '../components/MyContainer';
 export default function Favourites() {
     const [data, setData] = useState([])
 
-    "*** to be implemented ***"
-    // get request to fetch location data
-    const locDataURL = "http://127.0.0.1:5000/front_end_testing_favlist" // to be changed
-    useEffect(() => {
-        fetch(locDataURL)
-        .then(res=>res.json())
-        .then(d=>setData(d))
-    }, [])
+    const fetchFavouritesList = async () => {
+        try {
+            const response = await axios.get('/favourites/');
+            setData(response.data);
+            console.log(response.data)
+        } catch (error) {
+            console.error('There was an error fetching the favourites list!', error);
+        }
+    };
 
-    const filteredData = useMemo(()=>
-        data.filter(loc => loc.isFav == true),
-    [data])
+    useEffect(() => {
+        fetchFavouritesList();
+    }, []);
+
+    // const filteredData = useMemo(()=>
+    //     data.filter(loc => loc.isFav == true),
+    // [data])
 
     return (
         <MyContainer>
-            <LocationTable data={filteredData} dataChanger={setData}/>
+            <LocationTable data={data} dataChanger={setData}/>
         </MyContainer>
     )
 }

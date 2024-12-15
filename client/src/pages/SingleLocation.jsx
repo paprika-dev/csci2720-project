@@ -15,6 +15,7 @@ export default function SingleLocation() {
         try {
             const response = await axios.get('/locations/' + locName);
             setData(response.data);
+            console.log(response.data)
             setLoaded(true);
         } catch (error) {
             console.error('There was an error fetching the location data!', error);
