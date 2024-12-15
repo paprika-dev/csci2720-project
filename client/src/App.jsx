@@ -21,23 +21,17 @@ import { PageTransition } from './components/PageTransition';
 
 function MyRoutes() {
   const location = useLocation();
-  const [isAuthenticated, setIsAuthenticated] = useState(!!localStorage.getItem('token'));
-  // const [isUser, setIsUser] = useState(() => {
-  //   const isUser = JSON.parse(localStorage.getItem('user')) || { username: '', isAdmin: false };
-  //   return isUser.isAdmin ? true : false;
-  // });
   
-  const [userInfo, setUserInfo] = useState({ username: '', isAdmin: false });
+  const [userInfo, setUserInfo] = useState({ username: null, admin: false });
 
   useEffect(() => {
-      const user = JSON.parse(localStorage.getItem('user')) || { username: '', isAdmin: false };
+      const user = JSON.parse(localStorage.getItem('user')) || { username: null, admin: false };
       setUserInfo(user);
-      //console.log(userInfo);
   }, []);
 
   return(
     <>
-    <MyNavbar isAuthenticated={isAuthenticated} setIsAuthenticated={setIsAuthenticated} userInfo={userInfo} setUserInfo={setUserInfo}/>
+    <MyNavbar userInfo={userInfo} setUserInfo={setUserInfo}/>
     <AnimatePresence mode='wait'>
       <Routes location={location} key={location.pathname}>
         <Route path="/" element={
@@ -45,7 +39,7 @@ function MyRoutes() {
         }/>
         <Route path='/login' element = {
           <PublicRoute>
-            <Login setIsAuthenticated={setIsAuthenticated} setUserInfo={setUserInfo}/> 
+            <Login setUserInfo={setUserInfo}/> 
           </PublicRoute>
         }/>
         <Route path='/register' element={
@@ -53,55 +47,30 @@ function MyRoutes() {
             <Register/>
           </PublicRoute>
         }/>
-        {/* <Route path="/events" element={
-          <ProtectedRoute>
-            <Events />
-          </ProtectedRoute>
-        } />
-        <Route path="/locations" element={
-          <ProtectedRoute>
-              <Locations />
-          </ProtectedRoute>
-        } />
-        <Route path="/locations/:locName" element={
-          <ProtectedRoute>
-            <SingleLocation />
-          </ProtectedRoute>
-        } />
-        <Route path="/favourites" element={
-          <ProtectedRoute>
-            <Favourites />
-          </ProtectedRoute>
-        } />
-        <Route path="/map" element={
-          <ProtectedRoute>
-            <LocationMap />
-          </ProtectedRoute>
-        } /> */}
         <Route path="/events" element={
-          <PublicRoute>
+          <ProtectedRoute>
             <Events />
-          </PublicRoute>
+          </ProtectedRoute>
         } />
         <Route path="/locations" element={
-          <PublicRoute>
+          <ProtectedRoute>
               <Locations />
-          </PublicRoute>
+          </ProtectedRoute>
         } />
         <Route path="/locations/:locName" element={
-          <PublicRoute>
+          <ProtectedRoute>
             <SingleLocation />
-          </PublicRoute>
+          </ProtectedRoute>
         } />
         <Route path="/favourites" element={
-          <PublicRoute>
+          <ProtectedRoute>
             <Favourites />
-          </PublicRoute>
+          </ProtectedRoute>
         } />
         <Route path="/map" element={
-          <PublicRoute>
+          <ProtectedRoute>
             <LocationMap />
-          </PublicRoute>
+          </ProtectedRoute>
         } />
         <Route path="/admin" element={
           <AdminRoute>

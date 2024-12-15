@@ -1,26 +1,20 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import axios from 'axios';
-import { jwtDecode } from 'jwt-decode';
+import axios from '../api/axios';
 
-function Login({ setIsAuthenticated, setUserInfo }) {    
+function Login({ setUserInfo }) {    
 
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const navigate = useNavigate();
-    
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const res = await axios.post('http://localhost:5000/api/auth/login', { username, password });
-            const { token } = res.data;
-            const user = jwtDecode(token);
-            localStorage.setItem('token', token);
-            localStorage.setItem('user', JSON.stringify(user));
-            setIsAuthenticated(true);
-            setUserInfo(user)
-            console.log(user)
+            const res = await axios.post('/login', { username, password });
+            localStorage.setItem('user', JSON.stringify(res.data));
+            setUserInfo(res.data);
             navigate('/');
         } catch (error) {
             setError('Invalid username or password');

@@ -1,34 +1,28 @@
-import { useState, useEffect } from 'react'
+import axios from '../api/axios';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import Button from 'react-bootstrap/Button';
 import './NavBar.css';
 
-export const MyNavbar = ({ isAuthenticated, setIsAuthenticated, userInfo, setUserInfo }) => {
+export const MyNavbar = ({ userInfo, setUserInfo }) => {
     const location = useLocation();
     const navigate = useNavigate();
     
-    // const [userInfo, setUserInfo] = useState({ username: '', isAdmin: false });
-
-    useEffect(() => {
-        const user = JSON.parse(localStorage.getItem('user')) || { username: '', isAdmin: false };
-        setUserInfo(user);
-        //console.log(userInfo);
-    }, []);
-    
-
     const handleLogin = () => {
         navigate('/login');
     };
 
-    const handleLogout = () => {
-        console.log(`Before logout: ${JSON.stringify(userInfo)}`);
-        localStorage.removeItem('token');
-        setIsAuthenticated(false);
+    const handleLogout = async () => {
+        try {
+            await axios.post('/logout');
+            console.log('Logged out successfully');
+            navigate('/login');
+        } catch (error) {
+            console.error('Error during logout:', error);
+        }
         localStorage.removeItem('user');
-        setUserInfo({ username: '', isAdmin: false });
-        console.log(`After logout: ${JSON.stringify(userInfo)}`);
+        setUserInfo({ username: null, admin: false });
         navigate('/');
     };
 
@@ -47,16 +41,16 @@ export const MyNavbar = ({ isAuthenticated, setIsAuthenticated, userInfo, setUse
                     <Nav.Link as={Link} to="/locations">Locations</Nav.Link>
                     <Nav.Link as={Link} to="/favourites">Favourites</Nav.Link>
                     <Nav.Link as={Link} to="/events">Events</Nav.Link>
-                    {userInfo.isAdmin ? <Nav.Link as={Link} to="/admin">Admin</Nav.Link> : null}
+                    {userInfo.admin ? <Nav.Link as={Link} to="/admin">Admin</Nav.Link> : null}
                 </Nav>
-                {!isAuthenticated &&
+                {!userInfo.username &&
                 <Nav>
                     <Button variant="outline-success" onClick={handleLogin}>Login</Button>
                 </Nav>}
-                {isAuthenticated &&
+                {userInfo.username &&
                 <Nav>
                     <Navbar.Text className="me-4">
-                        {userInfo.isAdmin ? `Admin: ${userInfo.username}` : userInfo.username}
+                        {userInfo.admin ? `Admin: ${userInfo.username}` : userInfo.username}
                     </Navbar.Text>
                     <Button variant="outline-danger" onClick={handleLogout}>Logout</Button>
                 </Nav>}

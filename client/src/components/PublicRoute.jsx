@@ -2,9 +2,9 @@ import React from 'react';
 import { Navigate } from 'react-router-dom';
 
 export const PublicRoute = ({ children }) => {
-    const token = localStorage.getItem('token');
+    const user = JSON.parse(localStorage.getItem('user')) || { username: null, admin: false };
 
-    if (token) {
+    if (user.username) {
         return <Navigate to="/" />;
     }
 

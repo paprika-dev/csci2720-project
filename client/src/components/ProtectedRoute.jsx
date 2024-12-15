@@ -1,22 +1,11 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
-import { jwtDecode } from 'jwt-decode';
 
 export const ProtectedRoute = ({ children }) => {
-    const token = localStorage.getItem('token');
+    const user = JSON.parse(localStorage.getItem('user')) || { username: null, admin: false };
 
-    if (token) {
-        try {
-            const decodedToken = jwtDecode(token);
-            const currentTime = Date.now() / 1000; 
-            if (decodedToken.exp > currentTime) {
-                return children;
-            } else {
-                localStorage.removeItem('token');
-            }
-        } catch (error) {
-            console.error('Invalid token:', error);
-        }
+    if (user.username) {
+        return children
     }
 
     return <Navigate to="/login" />;
