@@ -1,80 +1,90 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import axios from '../api/axios';
 import { MyContainer } from '../components/MyContainer';
 import { FaTrash, FaEdit } from 'react-icons/fa';
+import { Modal, Button, Form } from 'react-bootstrap';
 
 const Admin = () => {
     const [users, setUsers] = useState([]);
-    const [formData, setFormData] = useState({ username: '', password: '', confirmPassword: '', isAdmin: false });
+    const [formData, setFormData] = useState({ username: '', password: '', confirmPassword: '', admin: false });
     const [error, setError] = useState('');
+    const [showModal, setShowModal] = useState(false);
+    const [editUserId, setEditUserId] = useState(null);
+
+    const fetchUsers = async () => {
+        try {
+            const response = await axios.get('/users');
+            setUsers(response.data);
+        } catch (error) {
+            console.error('There was an error fetching the users!', error);
+        }
+    };
 
     useEffect(() => {
-        const fetchUsers = async () => {
-            try {
-                const token = localStorage.getItem('token');
-                const response = await axios.get('http://localhost:5000/api/admin/users', {
-                    headers: { Authorization: `Bearer ${token}` }
-                });
-                setUsers(response.data);
-            } catch (error) {
-                console.error('There was an error fetching the users!', error);
-            }
-        };
         fetchUsers();
     }, []);
-
-    const handleDelete = async (username) => {
-        if (!window.confirm('Are you sure you want to delete this user?')) return;
-        try {
-            const token = localStorage.getItem('token');
-            await axios.delete(`http://localhost:5000/api/admin/delete/${username}`, {
-                headers: { Authorization: `Bearer ${token}` }
-            });
-            setUsers(users.filter(user => user.username !== username));
-            alert('User deleted successfully');
-        } catch (error) {
-            console.error('There was an error deleting the user!', error);
-        }
-    };
-
-    const handleEdit = async (id) => {
-        const newUsername = prompt('Enter new username:');
-        const newIsAdmin = window.confirm('Make this user an admin?');
-        if (!newUsername) return;
-        try {
-            const token = localStorage.getItem('token');
-            const response = await axios.put(`http://localhost:5000/api/admin/update/${id}`, { username: newUsername, isAdmin: newIsAdmin }, {
-                headers: { Authorization: `Bearer ${token}` }
-            });
-            setUsers(users.map(user => user._id === id ? response.data.user : user));
-            alert('User updated successfully');
-        } catch (error) {
-            console.error('There was an error updating the user!', error);
-        }
-    };
 
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
         setFormData({ ...formData, [name]: type === 'checkbox' ? checked : value });
     };
 
-    const handleSubmit = async (e) => {
+    const handleCreate = async (e) => {
         e.preventDefault();
         if (formData.password !== formData.confirmPassword) {
             setError('Passwords do not match');
             return;
         }
         try {
-            await axios.post('http://localhost:5000/api/auth/register', { username: formData.username, password: formData.password, isAdmin: formData.isAdmin });
+            await axios.post('/users', { username: formData.username, password: formData.password, admin: formData.admin });
             alert('User registered successfully');
-            const token = localStorage.getItem('token');
-            const response = await axios.get('http://localhost:5000/api/admin/users', {
-                headers: { Authorization: `Bearer ${token}` }
-            });
-            setUsers(response.data);
+            fetchUsers();
         } catch (error) {
             console.error(error);
-            setError(error.response.data.error || 'An error occurred');
+            if (error.response && error.response.status === 409) {
+                setError('User already exists');
+            } else {
+                setError(error.response.data.error || 'An error occurred');
+            }
+        }
+    };
+    
+    const handleDelete = async (id) => {
+        if (!window.confirm('Are you sure you want to delete this user?')) return;
+        try {
+            await axios.delete(`/users/${id}`);
+            alert('User deleted successfully');
+            fetchUsers();
+        } catch (error) {
+            console.error('There was an error deleting the user!', error);
+        }
+    };
+
+    const handleEdit = (user) => {
+        setEditUserId(user._id);
+        setFormData({ username: user.username, password: '', confirmPassword: '', admin: user.admin });
+        setShowModal(true);
+    };
+
+    const handleUpdate = async () => {
+        if (formData.password !== formData.confirmPassword) {
+            setError('Passwords do not match');
+            return;
+        }
+        try {
+            await axios.put(`/users/${editUserId}`, { username: formData.username, password: formData.password, admin: formData.admin });
+            alert('User updated successfully');
+            fetchUsers();
+            setShowModal(false);
+        } catch (error) {
+            console.error(error);
+            if (error.response && error.response.status === 409) {
+                setError('User already exists');
+            } else if (error.response && error.response.status === 400) {
+                setError('Invalid input');
+            } else {
+                setError(error.response.data.error || 'An error occurred');
+            }
         }
     };
 
@@ -97,11 +107,11 @@ const Admin = () => {
                                 <tr key={index} style={{ verticalAlign: 'middle' }}>
                                     <td>{user._id}</td>
                                     <td>{user.username}</td>
-                                    <td>{user.isAdmin ? 'Yes' : 'No'}</td>
+                                    <td>{user.admin ? 'Yes' : 'No'}</td>
                                     <td className="text-center align-middle">
-                                        <FaTrash onClick={() => handleDelete(user.username)} style={{ color: 'red', cursor: 'pointer', marginRight: '10px' }} />
+                                        <FaTrash onClick={() => handleDelete(user._id)} style={{ color: 'red', cursor: 'pointer', marginRight: '10px' }} />
                                         <span style={{ fontSize: '20px', fontWeight: 'bold', verticalAlign: 'middle' }}> / </span>
-                                        <FaEdit onClick={() => handleEdit(user._id)} style={{ color: 'blue', cursor: 'pointer', marginLeft: '10px' }} />
+                                        <FaEdit onClick={() => handleEdit(user)} style={{ color: 'blue', cursor: 'pointer', marginLeft: '10px' }} />
                                     </td>
                                 </tr>
                             ))}
@@ -109,7 +119,7 @@ const Admin = () => {
                     </table>
                 </div>
                 <h2 className="mt-5">Create New User</h2>
-                <form onSubmit={handleSubmit} className="p-4 border rounded bg-light">
+                <form onSubmit={handleCreate} className="p-4 border rounded bg-light">
                     <div className="mb-1">
                         <label htmlFor="username"><strong>Username</strong></label>
                         <input
@@ -151,17 +161,81 @@ const Admin = () => {
                         <input
                             type="checkbox"
                             className="form-check-input"
-                            id="isAdmin"
-                            name="isAdmin"
-                            checked={formData.isAdmin}
-                            onChange={(e) => setFormData({ ...formData, isAdmin: e.target.checked })}
+                            id="admin"
+                            name="admin"
+                            checked={formData.admin}
+                            onChange={(e) => setFormData({ ...formData, admin: e.target.checked })}
                         />
-                        <label className="form-check-label" htmlFor="isAdmin">Admin</label>
+                        <label className="form-check-label" htmlFor="admin">Admin</label>
                     </div>
                     {error && <div className="alert alert-danger">{error}</div>}
                     <button type="submit" className="btn btn-primary">Create User</button>
                 </form>
             </div>
+
+            <Modal show={showModal} onHide={() => setShowModal(false)}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Edit User</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <Form>
+                        <Form.Group controlId="formUsername">
+                            <Form.Label>Username</Form.Label>
+                            <Form.Control
+                                type="text"
+                                placeholder="Enter username"
+                                name="username"
+                                value={formData.username}
+                                onChange={handleChange}
+                            />
+                        </Form.Group>
+                        <Form.Group controlId="formPassword">
+                            <Form.Label>Password</Form.Label>
+                            <Form.Control
+                                type="password"
+                                placeholder="Enter password"
+                                name="password"
+                                value={formData.password}
+                                onChange={handleChange}
+                            />
+                        </Form.Group>
+                        <Form.Group controlId="formConfirmPassword">
+                            <Form.Label>Confirm Password</Form.Label>
+                            <Form.Control
+                                type="password"
+                                placeholder="Confirm password"
+                                name="confirmPassword"
+                                value={formData.confirmPassword}
+                                onChange={handleChange}
+                            />
+                        </Form.Group>
+                        <Form.Group controlId="formAdmin">
+                            <Form.Check
+                                type="checkbox"
+                                label="Admin"
+                                name="admin"
+                                checked={formData.admin}
+                                onChange={(e) => setFormData({ ...formData, admin: e.target.checked })}
+                            />
+                        </Form.Group>
+                        {error && <div className="alert alert-danger">{error}</div>}
+                    </Form>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={() => setShowModal(false)}>
+                        Close
+                    </Button>
+                    <Button variant="primary" onClick={() => {
+                        if (!formData.username || !formData.password) {
+                            setError('Username and Password cannot be empty');
+                        } else {
+                            handleUpdate();
+                        }
+                    }}>
+                        Save Changes
+                    </Button>
+                </Modal.Footer>
+            </Modal>
         </MyContainer>
     );
 };

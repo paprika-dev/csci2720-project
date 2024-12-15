@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import axios from 'axios';
+import axios from '../api/axios';
 
 function Register() {    
     const [formData, setFormData] = useState({ username: '', password: '', confirmPassword: '' });
@@ -16,12 +16,16 @@ function Register() {
             return;
         }
         try {
-            await axios.post('http://localhost:5000/api/auth/register', { username: formData.username, password: formData.password, isAdmin: false });
+            await axios.post('/users', { username: formData.username, password: formData.password, admin: false });
             alert('User registered successfully');
             navigation('/login');
         } catch (error) {
             console.error(error);
-            setError(error.response.data.error || 'An error occurred');
+            if (error.response && error.response.status === 409) {
+                setError('User already exists');
+            } else {
+                setError(error.response.data.error || 'An error occurred');
+            }
         }
     };
 

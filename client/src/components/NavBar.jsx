@@ -1,24 +1,30 @@
+import axios from '../api/axios';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import Button from 'react-bootstrap/Button';
 import './NavBar.css';
 
-export const MyNavbar = ({ isAuthenticated, setIsAuthenticated }) => {
+export const MyNavbar = ({ userInfo, setUserInfo }) => {
     const location = useLocation();
-    // const navigate = useNavigate();
+    const navigate = useNavigate();
     
-    // const user = JSON.parse(localStorage.getItem('user'));
+    const handleLogin = () => {
+        navigate('/login');
+    };
 
-    // const handleLogin = () => {
-    //     navigate('/login');
-    // };
-
-    // const handleLogout = () => {
-    //     setIsAuthenticated(false);
-    //     localStorage.removeItem('token');
-    //     navigate('/');
-    // };
+    const handleLogout = async () => {
+        try {
+            await axios.post('/logout');
+            console.log('Logged out successfully');
+            navigate('/login');
+        } catch (error) {
+            console.error('Error during logout:', error);
+        }
+        localStorage.removeItem('user');
+        setUserInfo({ username: null, admin: false });
+        navigate('/');
+    };
 
     // hide navbar on login page and register page
     if (location.pathname === "/login" || location.pathname === "/register") {
@@ -35,19 +41,19 @@ export const MyNavbar = ({ isAuthenticated, setIsAuthenticated }) => {
                     <Nav.Link as={Link} to="/locations">Locations</Nav.Link>
                     <Nav.Link as={Link} to="/favourites">Favourites</Nav.Link>
                     <Nav.Link as={Link} to="/events">Events</Nav.Link>
-                    {/* {user.isAdmin && <Nav.Link as={Link} to="/admin">Admin</Nav.Link>} */}
+                    {userInfo.admin ? <Nav.Link as={Link} to="/admin">Admin</Nav.Link> : null}
                 </Nav>
-                {/* {!isAuthenticated &&
+                {!userInfo.username &&
                 <Nav>
                     <Button variant="outline-success" onClick={handleLogin}>Login</Button>
                 </Nav>}
-                {isAuthenticated &&
+                {userInfo.username &&
                 <Nav>
                     <Navbar.Text className="me-4">
-                        {user.isAdmin ? `Admin: ${user.username}` : user.username}
+                        {userInfo.admin ? `Admin: ${userInfo.username}` : userInfo.username}
                     </Navbar.Text>
                     <Button variant="outline-danger" onClick={handleLogout}>Logout</Button>
-                </Nav>} */}
+                </Nav>}
             </Navbar.Collapse>
         </Navbar>
     );

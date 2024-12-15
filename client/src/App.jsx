@@ -21,25 +21,25 @@ import { PageTransition } from './components/PageTransition';
 
 function MyRoutes() {
   const location = useLocation();
-  // const [isAuthenticated, setIsAuthenticated] = useState(!!localStorage.getItem('token'));
-  const [isAuthenticated, setIsAuthenticated] = useState(true);
-  const [isAdmin, setIsAdmin] = useState(() => {
-    const user = JSON.parse(localStorage.getItem('user'));
-    // return user.isAdmin ? true : false;
-    return false
-  });
+  
+  const [userInfo, setUserInfo] = useState({ username: null, admin: false });
+
+  useEffect(() => {
+      const user = JSON.parse(localStorage.getItem('user')) || { username: null, admin: false };
+      setUserInfo(user);
+  }, []);
 
   return(
     <>
-    <MyNavbar isAuthenticated={isAuthenticated} setIsAuthenticated={setIsAuthenticated}/>
+    <MyNavbar userInfo={userInfo} setUserInfo={setUserInfo}/>
     <AnimatePresence mode='wait'>
       <Routes location={location} key={location.pathname}>
         <Route path="/" element={
-            <Home />
+          <Home />
         }/>
         <Route path='/login' element = {
           <PublicRoute>
-            <Login setIsAuthenticated={setIsAuthenticated}/> 
+            <Login setUserInfo={setUserInfo}/> 
           </PublicRoute>
         }/>
         <Route path='/register' element={

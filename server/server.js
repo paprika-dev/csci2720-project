@@ -2,21 +2,24 @@ import cors from "cors";
 import express, { json } from "express";
 import session from "express-session";
 import mongoose from "mongoose";
-
+import dotenv from "dotenv";
 import { User, Event, Comment, Location } from "./models.js";
 
+dotenv.config();
 const { PORT, MONGO_URI, SECRET } = process.env;
 
-const app = express();
-// import "dotenv/config.js";
 
 // const authRoutes =  './router/authRoute';
 // const protectedRoutes = require('./router/protected');
 // const adminRoutes = require('./router/adminRoute');
 
+const app = express();
 app.use(
 	json(),
-	cors(),
+	cors({
+		origin: 'http://localhost:5173', // Replace with your frontend URL
+		credentials: true,              // Allow cookies to be sent
+	}),
 	session({
 		name: "sid",
 		secret: SECRET,
@@ -180,26 +183,30 @@ app.get("/users", handleAdminGuard, async (_req, res) => {
 	return res.status(200).json(users || []);
 });
 
-app.post("/users", handleAdminGuard, async (req, res) => {
+app.post("/users", async (req, res) => {
 	const { username, password, admin } = req.body;
-	if (isAnyMissing(username, password, admin)) {
+	if (isAnyMissing(username, password)) {
 		return res.status(400).end();
 	}
 	const user = await User.exists({ username }).exec();
 	if (user) {
 		return res.status(409).end();
 	}
-	await User.create({ username, password, admin });
+	await User.create({ username, password, admin: admin || false });
 	return res.status(201).end();
 });
 
 app.put("/users/:id", handleAdminGuard, async (req, res) => {
-	const { username, password, admin } = res.body;
+	const { username, password, admin } = req.body;
 	if (
 		isAnyMissing(username, password, admin) ||
 		!mongoose.isValidObjectId(req.params.id)
 	) {
 		return res.status(400).end();
+	}
+	const existingUser = await User.exists({ username }).exec();
+	if (existingUser) {
+		return res.status(409).end();
 	}
 	const user = await User.findByIdAndUpdate(
 		req.params.id,
