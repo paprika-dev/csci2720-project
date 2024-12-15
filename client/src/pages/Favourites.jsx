@@ -9,8 +9,8 @@ export default function Favourites() {
     const fetchFavouritesList = async () => {
         try {
             const response = await axios.get('/favourites/');
-            setData(response.data);
-            console.log(response.data)
+            const data_favcheck = response.data.map(loc=>{return {...loc, isFav: true}})
+            setData(data_favcheck);
         } catch (error) {
             console.error('There was an error fetching the favourites list!', error);
         }
@@ -19,10 +19,6 @@ export default function Favourites() {
     useEffect(() => {
         fetchFavouritesList();
     }, []);
-
-    // const filteredData = useMemo(()=>
-    //     data.filter(loc => loc.isFav == true),
-    // [data])
 
     return (
         <MyContainer>

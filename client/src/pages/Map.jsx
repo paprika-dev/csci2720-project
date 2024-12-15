@@ -28,9 +28,6 @@ export default function LocationMap() {
                         defaultZoom={11.1}
                         defaultCenter={ { lat: 22.402769627852184, lng: 114.12232266491166 } }
                         mapId={import.meta.env.VITE_ALL_LOCATIONS_MAP_ID}
-                        onCameraChanged={ (ev) =>
-                            console.log('camera changed:', ev.detail.center, 'zoom:', ev.detail.zoom)
-                          }
                     >
                             <PoiMarkers pois={POIs} />
                     </Map>

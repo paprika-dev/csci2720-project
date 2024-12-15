@@ -28,6 +28,7 @@ export default function Locations() {
         fetchLocationsData();
     }, []);
 
+
     const filteredData = useMemo(()=>
             data.filter(loc => loc.name.toLowerCase().includes(query.toLowerCase()) && 
                                 (category == "all" ? 1 : loc.category.includes(category))),
