@@ -9,7 +9,10 @@
 
 body {
   min-height: 100vh;
-  /* background-color: #30B1BF !important; */
+  background-color: #1D6A73 !important
+}
+
+.background-image{
   background-image: url(./assets/background.jpg);
   background-size: cover;
 }

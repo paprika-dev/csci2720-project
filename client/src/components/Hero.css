@@ -1,4 +1,13 @@
+.hero {
+    margin-top: 20vh;
+}
+
 .tagline {
     color: white;
     font-size: 5em;
+    font-family: "Gaegu", sans-serif;
+}
+
+.user-location-input {
+    width: 60vw;
 }

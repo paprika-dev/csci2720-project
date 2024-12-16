@@ -22,6 +22,7 @@ import { PageTransition } from './components/PageTransition';
 function MyRoutes() {
   const location = useLocation();
   
+  // apply user info to navbar
   const defaultUserInfo = { 
     username: null, 
     admin: false,
@@ -39,13 +40,28 @@ function MyRoutes() {
       setUserInfo(user);
   }, []);
 
+
+  // use background image except at landing page
+  useEffect(() => {
+    const body = document.body;
+    
+    if (location.pathname !== '/') {
+        body.classList.add('background-image');
+    } else {
+        body.classList.remove('background-image');
+    }
+  }, [location]);
+
+
   return(
     <>
     <MyNavbar userInfo={userInfo} setUserInfo={setUserInfo}/>
     <AnimatePresence mode='wait'>
       <Routes location={location} key={location.pathname}>
         <Route path="/" element={
-          <Home setUserInfo={setUserInfo}/>
+          // <PageTransition>
+            <Home setUserInfo={setUserInfo}/>
+          // </PageTransition>
         }/>
         <Route path='/login' element = {
           <PublicRoute>
@@ -54,32 +70,44 @@ function MyRoutes() {
         }/>
         <Route path='/register' element={
           <PublicRoute>
-            <Register/>
+            {/* <PageTransition> */}
+              <Register/>
+            {/* </PageTransition> */}
           </PublicRoute>
         }/>
         <Route path="/events" element={
           <ProtectedRoute>
-            <Events />
+            {/* <PageTransition> */}
+              <Events />
+            {/* </PageTransition> */}
           </ProtectedRoute>
         } />
         <Route path="/locations" element={
           <ProtectedRoute>
-              <Locations />
+              {/* <PageTransition> */}
+                <Locations />
+              {/* </PageTransition> */}
           </ProtectedRoute>
         } />
         <Route path="/locations/:locName" element={
           <ProtectedRoute>
-            <SingleLocation />
+            {/* <PageTransition> */}
+              <SingleLocation />
+            {/* </PageTransition> */}
           </ProtectedRoute>
         } />
         <Route path="/favourites" element={
           <ProtectedRoute>
-            <Favourites />
+            {/* <PageTransition> */}
+              <Favourites />
+            {/* </PageTransition> */}
           </ProtectedRoute>
         } />
         <Route path="/map" element={
           <ProtectedRoute>
-            <LocationMap />
+            {/* <PageTransition> */}
+              <LocationMap />
+            {/* </PageTransition> */}
           </ProtectedRoute>
         } />
         <Route path="/admin" element={

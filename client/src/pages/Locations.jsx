@@ -7,18 +7,28 @@ import distanceSVG from '../assets/distance.svg'
 import { LocationTable } from '../components/LocationTable';
 import { Slider } from '../components/Slider';
 import { MyContainer } from '../components/MyContainer';
+import { haversine } from '../utils/haversine';
 
 export default function Locations() {
     const [query, setQuery] = useState("")
     const [data, setData] = useState([])
-    const [distance, setDistance] = useState(80)
+    const [distance, setDistance] = useState(30)
     const [category, setCategory] = useState("all")
 
     
     const fetchLocationsData = async () => {
         try {
             const response = await axios.get('/locations');
-            setData(response.data);
+            const userLocation = JSON.parse(localStorage.getItem('user')).location
+            const data_withDistance = response.data.map(loc=>{
+                return {...loc, distance: haversine(
+                    loc.latitude, 
+                    loc.longitude, 
+                    userLocation.latitude, 
+                    userLocation.longitude)
+                }})
+            setData(data_withDistance);
+            console.log(data_withDistance)
         } catch (error) {
             console.error('There was an error fetching the location data!', error);
         }
@@ -30,13 +40,10 @@ export default function Locations() {
 
 
     const filteredData = useMemo(()=>
-            data.filter(loc => loc.name.toLowerCase().includes(query.toLowerCase()) && 
-                                (category == "all" ? 1 : loc.category.includes(category))),
-    [data, query, category])
-    //     data.filter(loc => loc.name.toLowerCase().includes(query.toLowerCase()) && 
-    //                         (category == "all" ? 1 : loc.category.includes(category)) &&
-    //                         loc.distance < distance),
-    // [data, query, category, distance])
+        data.filter(loc => loc.name.toLowerCase().includes(query.toLowerCase()) && 
+                            (category == "all" ? 1 : loc.category.includes(category)) &&
+                            loc.distance < distance),
+    [data, query, category, distance])
     
     const categories = [...new Set(data.flatMap(loc => loc.category))]
 
@@ -45,7 +52,14 @@ export default function Locations() {
             <div className='d-flex align-items-center mb-3 gap-4'>
                 <div className='d-flex align-items-center gap-2 position-relative'>
                     <img src={distanceSVG} />
-                    <Slider value={distance} stepSize={5} setValue={setDistance} tag={"< "+distance+" km"}></Slider>
+                    <Slider 
+                        value={distance} 
+                        max={45}
+                        min={5}
+                        stepSize={5} 
+                        setValue={setDistance} 
+                        tag={"< "+distance+" km"}
+                    />
                 </div>
                 <div className='d-flex align-items-center gap-2'>
                     <label htmlFor="catSelect"><img src={filterSVG} /></label>

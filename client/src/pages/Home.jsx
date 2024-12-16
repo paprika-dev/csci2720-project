@@ -9,9 +9,8 @@ export default function Home({ setUserInfo }) {
     return (
         <>
         <Hero>
+            <UserLocation setUserInfo={setUserInfo}></UserLocation>
         </Hero>
-        <UserLocation setUserInfo={setUserInfo}></UserLocation>
         </>
-
     )
 }
