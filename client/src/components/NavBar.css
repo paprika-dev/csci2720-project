@@ -13,3 +13,8 @@
     color: var(--theme-color-5);
     /* color: #2ca9bc; */
 }
+
+.user-location {
+    font-size: 0.8em;
+    overflow-wrap: break-word;
+}

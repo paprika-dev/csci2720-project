@@ -3,6 +3,7 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import Button from 'react-bootstrap/Button';
+import locationSVG from '../assets/location.svg'
 import './NavBar.css';
 
 export const MyNavbar = ({ userInfo, setUserInfo }) => {
@@ -22,7 +23,7 @@ export const MyNavbar = ({ userInfo, setUserInfo }) => {
             console.error('Error during logout:', error);
         }
         localStorage.removeItem('user');
-        setUserInfo({ username: null, admin: false });
+        setUserInfo({ username: null, admin: false, location: null });
         navigate('/');
     };
 
@@ -32,7 +33,7 @@ export const MyNavbar = ({ userInfo, setUserInfo }) => {
     }
 
     return (
-        <Navbar id="navbar" expand="md" className="bg-body-tertiary px-4">
+        <Navbar id="navbar" expand="lg" className="bg-body-tertiary px-4">
             <Navbar.Brand id="navbar-brand" as={Link} to="/">LosGehts</Navbar.Brand>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
@@ -48,7 +49,10 @@ export const MyNavbar = ({ userInfo, setUserInfo }) => {
                     <Button variant="outline-success" onClick={handleLogin}>Login</Button>
                 </Nav>}
                 {userInfo.username &&
-                <Nav>
+                <Nav className='align-items-center'>
+                    <Navbar.Text className="me-4 user-location">
+                        <img src={locationSVG} />{userInfo.location.name}
+                    </Navbar.Text>
                     <Navbar.Text className="me-4">
                         {userInfo.admin ? `Admin: ${userInfo.username}` : userInfo.username}
                     </Navbar.Text>

@@ -22,10 +22,20 @@ import { PageTransition } from './components/PageTransition';
 function MyRoutes() {
   const location = useLocation();
   
-  const [userInfo, setUserInfo] = useState({ username: null, admin: false });
+  const defaultUserInfo = { 
+    username: null, 
+    admin: false,
+    location: {
+      name: "The Chinese University of Hong Kong", 
+      latitude: 22.4196, 
+      longitude: 114.2068
+    }
+  }
+
+  const [userInfo, setUserInfo] = useState(defaultUserInfo);
 
   useEffect(() => {
-      const user = JSON.parse(localStorage.getItem('user')) || { username: null, admin: false };
+      const user = JSON.parse(localStorage.getItem('user')) || defaultUserInfo;
       setUserInfo(user);
   }, []);
 
@@ -35,7 +45,7 @@ function MyRoutes() {
     <AnimatePresence mode='wait'>
       <Routes location={location} key={location.pathname}>
         <Route path="/" element={
-          <Home />
+          <Home setUserInfo={setUserInfo}/>
         }/>
         <Route path='/login' element = {
           <PublicRoute>

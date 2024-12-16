@@ -7,7 +7,7 @@ import { useState, useEffect } from "react"
 export default function SingleLocation() {
     const params = useParams()
     const locName = params.locName.replace(/-+/g,' ')
-    const googleMapURL = `https://www.google.com/maps/embed/v1/place?key=${import.meta.env.VITE_GOOGLE_MAPS_API_KEY}&q=${locName}`
+    const googleMapURL = `https://www.google.com/maps/embed/v1/place?language=en&key=${import.meta.env.VITE_GOOGLE_MAPS_API_KEY}&q=${locName}`
     const [data, setData] = useState([])
     const [loaded, setLoaded] = useState(false)
 

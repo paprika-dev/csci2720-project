@@ -13,8 +13,14 @@ function Login({ setUserInfo }) {
         e.preventDefault();
         try {
             const res = await axios.post('/login', { username, password });
-            localStorage.setItem('user', JSON.stringify(res.data));
-            setUserInfo(res.data);
+            const userinfo = res.data
+            userinfo.location = { // set default location to CUHK
+                name: "The Chinese University of Hong Kong", 
+                latitude: 22.4196, 
+                longitude: 114.2068
+            }
+            localStorage.setItem('user', JSON.stringify(userinfo));
+            setUserInfo(userinfo);
             navigate('/');
         } catch (error) {
             setError('Invalid username or password');

@@ -1,8 +1,8 @@
 import { useEffect } from "react"
 import { Hero } from "../components/Hero"
-import { HomeMap } from "../components/PlacesAutocomplete"
+import { UserLocation } from "../components/UserLocation"
 
-export default function Home() {
+export default function Home({ setUserInfo }) {
 
     useEffect(()=>console.log("landed in home page"), [])
     
@@ -10,8 +10,7 @@ export default function Home() {
         <>
         <Hero>
         </Hero>
-        {/* <HomeMap>
-        </HomeMap> */}
+        <UserLocation setUserInfo={setUserInfo}></UserLocation>
         </>
 
     )

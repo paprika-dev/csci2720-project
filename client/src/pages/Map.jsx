@@ -22,7 +22,7 @@ export default function LocationMap() {
 
     return (
         <MyContainer>
-            <APIProvider apiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}>
+            <APIProvider apiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY} language="en">
                 <div style={{height:"65vh", width:"70vw"}}>
                     <Map
                         defaultZoom={11.1}
