@@ -1,13 +1,39 @@
 .hero {
     margin-top: 20vh;
+    position: relative;
+    width: 80vw;
 }
 
 .tagline {
-    color: white;
-    font-size: 5em;
+    color: var(--theme-color-5);
     font-family: "Gaegu", sans-serif;
+    font-size: 4em;
 }
 
 .user-location-input {
-    width: 60vw;
+    width: 65vw;
+}
+
+.bg-circle-2 {
+    position: absolute;
+    right: 0px;
+    bottom: -200px;
+    z-index: -1;
+}
+
+.bg-circle-1 {
+    position: absolute;
+    left: -200px;
+    top: -250px;
+    z-index: -1;
+}
+
+.bg-circle-2 circle {
+    fill: #F5613E;
+    overflow: hidden;
+}
+
+.bg-circle-1 circle {
+    fill: #cdcaef;
+    overflow: hidden;
 }

@@ -63,7 +63,7 @@ const PlaceAutocomplete = ({ onPlaceSelect }) => {
 
   return (
     <div className="autocomplete-container">
-      <Form.Control placeholder="Enter my loction" ref={inputRef}/>
+      <Form.Control placeholder="Enter your loction" ref={inputRef}/>
     </div>
   );
 };
