@@ -1,18 +1,49 @@
+/* EventGrid.css */
+
 .event-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(600px, 1fr));
-    gap: 10px;
-    margin-top: 0px;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Responsive grid layout */
+    gap: 1.5rem;
+    margin-top: 1rem;
+    padding: 0.5rem;
 }
 
 .event-card {
-    border: 1px solid #f5f2f2;
-    border-radius: 8px;
-    transition: transform 0.2s ease-in-out;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
 }
 
 .event-card:hover {
-    transform: scale(1.05);
+    transform: scale(1.03);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.popup-container {
+    margin-top: 1rem;
+    padding: 1rem;
+    border: 2px solid #007bff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #f9f9f9;
+}
+
+.card-body h5 {
+    color: #007bff;
+}
+
+.card-body p strong {
+    color: #333;
+}
+
+.card-body a {
+    color: #007bff;
+    text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+    .event-grid {
+        grid-template-columns: 1fr; /* Single-column layout on small screens */
+    }
 }
 .event-container {
     height: 100%; /* Fixed height for all cards */
