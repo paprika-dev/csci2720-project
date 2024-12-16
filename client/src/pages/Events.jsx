@@ -21,15 +21,23 @@ export default function Events() {
             .then(d => setData(d));
     }, []);
 
-    // Filter events based on inputs
-    const filteredData = useMemo(() =>
-        data.filter(event => {
-            const eventTitle = event.title?.toLowerCase() || ""; // Safely convert to lowercase
-            const searchQuery = query?.toLowerCase() || ""; // Safely convert to lowercase
-    
-            return eventTitle.includes(searchQuery);
-        }),
-    [data, query]);
+    // Filter events based on inputs (event.id and event.title)
+ const filteredData = useMemo(() =>
+    data.filter(event => {
+        const eventTitle = event.title?.toLowerCase() || ""; // Safely convert title to lowercase
+        const eventId = event.id?.toString().toLowerCase() || ""; // Safely convert id to string and lowercase
+        const eventLid = event.lid?.toString().toLowerCase() || ""; // Safely convert lid to string and lowercase
+        const searchQuery = query?.toLowerCase() || ""; // Safely convert search query to lowercase
+
+        // Check if query matches any of the fields
+        return (
+            eventTitle.includes(searchQuery) ||
+            eventId.includes(searchQuery) ||
+            eventLid.includes(searchQuery)
+        );
+    }),
+[data, query]);
+
 
     // Calculate the paginated data
     const paginatedData = useMemo(() => {
@@ -44,12 +52,14 @@ export default function Events() {
     return (
         <MyContainer>
             {/* Top Banner */}
-          
+            <div>
+                <h1>Event list</h1>
+                </div>
             {/* Filters */}
             <div className="d-flex align-items-center mb-3 gap-4">
                 <div className="d-flex align-items-center gap-2">
                     <label htmlFor="eventSearch"><img src={searchSVG} alt="Search" /></label>
-                    <Form.Control id="eventSearch" value={query} onChange={e => setQuery(e.target.value)} />
+                    <Form.Control id="eventSearch" value={query} placeholder="Title/LocID/EvtID" onChange={e => setQuery(e.target.value)} />
                 </div>
             </div>
 

@@ -38,7 +38,6 @@ export const EventGrid = ({ data }) => {
                             <div className="card-body text-black">
                                 <h5>Event Details</h5>
                                 <p>
-                                    <strong>Venue:</strong> {event.title}<br />
                                     <strong>Date/Time:</strong> {event.predate}<br />
                                     <strong>Program Time:</strong> {event.progtime}<br />
                                     <strong>Presenter:</strong> {event.presenterorg}<br />
@@ -46,7 +45,9 @@ export const EventGrid = ({ data }) => {
                                     <strong>Agelimit:</strong> {event.agelimit ? event.agelimit: "-"}<br />
                                     <strong>Description:</strong> {event.desc ? event.desc: "-"}<br />
                                     <strong>Location:</strong>
-                                    <Link to={"http://localhost:5173/locations/"+"{event.lid}"}>{event.lid}</Link>
+                                    <Link to={`http://localhost:5173/locations/${event.lid}`}>
+                                        {event.lid}
+                                    </Link>
                                 </p>
                             </div>
                         </div>
