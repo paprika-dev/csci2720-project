@@ -1,11 +1,12 @@
 import mongoose from "mongoose";
+import bcrypt from "bcrypt";
 
 import { Event, Location, User, Comment } from "../models.js";
 
-import events from "./events.json" assert { type: "json" };
-import locations from "./locations.json" assert { type: "json" };
-import users from "./users.json" assert { type: "json" };
-import comments from "./comments.json" assert { type: "json" };
+import events from "./events.json" with { type: "json" };
+import locations from "./locations.json" with { type: "json" };
+import users from "./users.json" with { type: "json" };
+import comments from "./comments.json" with { type: "json" };
 
 const { MONGO_URI } = process.env;
 
@@ -30,12 +31,15 @@ await Event.insertMany(
 );
 
 const _users = await User.insertMany(
-	users.map((user) => {
-		const favourites = user.favourites?.map(
-			(lid) => _locations.find(({ id }) => id === lid)._id,
-		);
-		return { ...user, favourites };
-	}),
+	await Promise.all(
+		users.map(async (user) => {
+			const favourites = user.favourites?.map(
+				(lid) => _locations.find(({ id }) => id === lid)._id,
+			);
+			const password = await bcrypt.hash(user.password, 10);
+			return { ...user, favourites, password };
+		}),
+	),
 );
 
 await Comment.insertMany(
