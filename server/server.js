@@ -83,9 +83,10 @@ app.put("/username", handleAuthCheck, async (req, res) => {
 });
 
 app.get("/events", async (_req, res) => {
-	const events = await Event.find({}, "-__v")
-		.lean()
-		.populate("location", "-__v");
+	// const events = await Event.find({}, "-__v")
+	// 	.lean()
+	// 	.populate("location", "-__v");
+	const events = await Event.find({}, "-__v").lean().exec();
 	return res.status(200).json(events || []);
 });
 
@@ -102,16 +103,18 @@ app.post("/events", handleAdminGuard, async (req, res) => {
 			price,
 			presenterorg,
 			lid,
-		) ||
-		!mongoose.isValidObjectId(lid)
+		)
 	) {
 		return res.status(400).end();
 	}
-	const location = await Location.exists({ _id: lid }).exec();
+	const location = await Location.exists({ id: lid }).exec();
+	const lastEvent = await Event.findOne().sort({ id: -1 }).lean().exec();
+	const newId = lastEvent ? lastEvent.id + 1 : 1;
 	if (!location) {
 		return res.status(400).end();
 	}
 	await Event.create({
+		id: newId,
 		title,
 		predate,
 		progtime,
@@ -119,7 +122,7 @@ app.post("/events", handleAdminGuard, async (req, res) => {
 		agelimit,
 		price,
 		presenterorg,
-		location: location._id,
+		lid,
 	});
 	return res.status(201).end();
 });
@@ -138,12 +141,11 @@ app.put("/events/:id", handleAdminGuard, async (req, res) => {
 			presenterorg,
 			lid,
 		) ||
-		!mongoose.isValidObjectId(lid) ||
 		!mongoose.isValidObjectId(req.params.id)
 	) {
 		return res.status(400).end();
 	}
-	const location = await Location.exists({ _id: lid }).exec();
+	const location = await Location.exists({ id: lid }).exec();
 	if (!location) {
 		return res.status(400).end();
 	}
@@ -157,7 +159,7 @@ app.put("/events/:id", handleAdminGuard, async (req, res) => {
 			agelimit,
 			price,
 			presenterorg,
-			location: location._id,
+			lid,
 		},
 		{ new: true },
 	).exec();

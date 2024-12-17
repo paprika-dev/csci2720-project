@@ -26,11 +26,11 @@ const UserSchema = new mongoose.Schema({
 export const User = mongoose.model("User", UserSchema);
 
 const EventSchema = new mongoose.Schema({
-	// id: {
-	//   type: String,
-	//   required: true,
-	//   unique: true,
-	// },
+	id: {
+	  type: String,
+	  required: true,
+	  unique: true,
+	},
 	title: {
 		type: String,
 		required: true,
@@ -53,11 +53,15 @@ const EventSchema = new mongoose.Schema({
 	presenterorg: {
 		type: String,
 	},
-	location: {
-		type: mongoose.Schema.Types.ObjectId,
-		ref: "Location",
+	lid: {
+		type: String,
 		required: true,
-	},
+	}
+	// location: {
+	// 	type: mongoose.Schema.Types.ObjectId,
+	// 	ref: "Location",
+	// 	required: true,
+	// },
 });
 
 export const Event = mongoose.model("Event", EventSchema);
