@@ -3,7 +3,7 @@ import { useCallback, useState } from 'react';
 import { Link } from 'react-router-dom';
 import homeSVG from '../assets/home.svg'
 
-const MarkerWithInfoWindow = ({ position, name, useHomePin=false }) => {
+const MarkerWithInfoWindow = ({ position, name }) => {
   const [markerRef, marker] = useAdvancedMarkerRef();
   const [infoWindowShown, setInfoWindowShown] = useState(false);
 
