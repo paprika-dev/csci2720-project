@@ -12,7 +12,8 @@ const Favourites = lazy(() => import('./pages/Favourites'))
 const Events = lazy(() => import('./pages/Events'))
 const Login = lazy(() => import('./pages/Login'))
 const Register = lazy(() => import('./pages/Register'))
-const Admin = lazy(() => import('./pages/Admin'))
+const AdminUser = lazy(() => import('./pages/AdminUser'))
+const AdminEvent = lazy(() => import('./pages/AdminEvent'))
 const NoMatch = lazy(() => import('./pages/NoMatch'))
 import 'bootstrap/dist/css/bootstrap.min.css';
 import AdminRoute from './components/AdminRoute';
@@ -110,9 +111,14 @@ function MyRoutes() {
             {/* </PageTransition> */}
           </ProtectedRoute>
         } />
-        <Route path="/admin" element={
+        <Route path="/admin/users" element={
           <AdminRoute>
-            <Admin />
+            <AdminUser />
+          </AdminRoute>
+        } />
+        <Route path="/admin/events" element={
+          <AdminRoute>
+            <AdminEvent />
           </AdminRoute>
         } />
         <Route path="*" element={

@@ -272,14 +272,13 @@ app.get("/locations/:name", async (req, res) => {
 		return res.status(404).end();
 	}
 	const [events, comments] = await Promise.all([
-		Event.find({ location: location._id }, "-__v -location").lean().exec(),
 		Comment.find({ location: location._id }, "-__v -location")
 			.lean()
 			.populate("user", "username")
 			.sort({ created: -1 })
 			.exec(),
 	]);
-	return res.status(200).json({ ...location, events, comments });
+	return res.status(200).json({ ...location, comments });
 });
 
 app.post("/comments", checkAuth, async (req, res) => {

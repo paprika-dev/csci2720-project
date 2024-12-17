@@ -2,6 +2,7 @@ import axios from '../api/axios';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
+import NavDropdown from 'react-bootstrap/NavDropdown';
 import Button from 'react-bootstrap/Button';
 import locationSVG from '../assets/location.svg'
 import './NavBar.css';
@@ -42,7 +43,19 @@ export const MyNavbar = ({ userInfo, setUserInfo }) => {
                     <Nav.Link as={Link} to="/locations">Locations</Nav.Link>
                     <Nav.Link as={Link} to="/favourites">Favourites</Nav.Link>
                     <Nav.Link as={Link} to="/events">Events</Nav.Link>
-                    {userInfo.admin ? <Nav.Link as={Link} to="/admin">Admin</Nav.Link> : null}
+                    {userInfo.admin ? 
+                        <>
+                        <NavDropdown title="Admin" id="basic-nav-dropdown">
+                            <NavDropdown.Item>
+                                <Nav.Link as={Link} to="/admin/users">Manage Users</Nav.Link>
+                            </NavDropdown.Item>
+                            <NavDropdown.Item>
+                                <Nav.Link as={Link} to="/admin/events">Manage Events</Nav.Link>
+                            </NavDropdown.Item>
+                        </NavDropdown>
+                        </> 
+                        : null
+                    }
                 </Nav>
                 {!userInfo.username &&
                 <Nav>
