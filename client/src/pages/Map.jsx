@@ -1,11 +1,13 @@
 import axios from '../api/axios';
 import { APIProvider, Map } from '@vis.gl/react-google-maps';
 import { PoiMarkers } from '../components/Pin.jsx';
+import { UserLocationMarker } from '../components/Pin.jsx';
 import { MyContainer } from '../components/MyContainer.jsx';
 import { useState, useEffect } from 'react';
 
 export default function LocationMap() {
     const [POIs, setPOIs] = useState([])
+    const userLocation = JSON.parse(localStorage.getItem('user')).location
 
     const fetchLocationData = async () => {
         try {
@@ -30,6 +32,7 @@ export default function LocationMap() {
                         mapId={import.meta.env.VITE_ALL_LOCATIONS_MAP_ID}
                     >
                             <PoiMarkers pois={POIs} />
+                            <UserLocationMarker position={{"lat": userLocation.latitude, "lng": userLocation.longitude}}/>
                     </Map>
                 </div>
             </APIProvider>

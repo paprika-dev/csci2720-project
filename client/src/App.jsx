@@ -45,7 +45,7 @@ function MyRoutes() {
   useEffect(() => {
     const body = document.body;
     
-    if (location.pathname !== '/') {
+    if (location.pathname == '/') {
         body.classList.add('background-image');
     } else {
         body.classList.remove('background-image');
@@ -60,7 +60,7 @@ function MyRoutes() {
       <Routes location={location} key={location.pathname}>
         <Route path="/" element={
           // <PageTransition>
-            <Home setUserInfo={setUserInfo}/>
+            <Home userInfo={userInfo} setUserInfo={setUserInfo}/>
           // </PageTransition>
         }/>
         <Route path='/login' element = {

@@ -11,14 +11,7 @@
 }
 
 .user-location-input {
-    width: 65vw;
-}
-
-.bg-circle-2 {
-    position: absolute;
-    right: 0px;
-    bottom: -200px;
-    z-index: -1;
+    width: 40vw;
 }
 
 .bg-circle-1 {
@@ -28,12 +21,17 @@
     z-index: -1;
 }
 
-.bg-circle-2 circle {
-    fill: #F5613E;
-    overflow: hidden;
+.bg-circle-2 {
+    position: absolute;
+    right: 0px;
+    bottom: -250px;
+    z-index: -1;
 }
 
-.bg-circle-1 circle {
-    fill: #cdcaef;
-    overflow: hidden;
+.bg-circle-3 {
+    position: absolute;
+    right: 200px;
+    bottom: -100px;
+    z-index: -1;
 }
+

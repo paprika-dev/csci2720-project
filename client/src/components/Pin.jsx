@@ -1,8 +1,9 @@
 import { AdvancedMarker, Pin, InfoWindow, useAdvancedMarkerRef } from '@vis.gl/react-google-maps';
 import { useCallback, useState } from 'react';
 import { Link } from 'react-router-dom';
+import homeSVG from '../assets/home.svg'
 
-const MarkerWithInfoWindow = ({ position, name }) => {
+const MarkerWithInfoWindow = ({ position, name, useHomePin=false }) => {
   const [markerRef, marker] = useAdvancedMarkerRef();
   const [infoWindowShown, setInfoWindowShown] = useState(false);
 
@@ -41,3 +42,14 @@ export const PoiMarkers = ({ pois }) => {
       </>
     );
   };
+
+export const UserLocationMarker = ({ position }) => {
+  return(
+    <>
+      <AdvancedMarker
+        position={position}>
+        <img src={homeSVG} />
+      </AdvancedMarker>
+    </>
+  )
+}
