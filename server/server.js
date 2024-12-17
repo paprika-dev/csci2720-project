@@ -256,7 +256,7 @@ app.get("/locations/:name", async (req, res) => {
 	if (!location) {
 		return res.status(404).end();
 	}
-	const comments = await Promise.all([
+	const [comments] = await Promise.all([
 		Comment.find({ location: location._id }, "-__v -location")
 			.lean()
 			.populate("user", "username")
