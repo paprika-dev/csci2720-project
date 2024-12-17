@@ -2,23 +2,19 @@ import cors from "cors";
 import express, { json } from "express";
 import session from "express-session";
 import mongoose from "mongoose";
-import dotenv from "dotenv";
+import bcrypt from "bcrypt";
+
 import { User, Event, Comment, Location } from "./models.js";
 
-dotenv.config();
 const { PORT, MONGO_URI, SECRET } = process.env;
 
-
-// const authRoutes =  './router/authRoute';
-// const protectedRoutes = require('./router/protected');
-// const adminRoutes = require('./router/adminRoute');
-
 const app = express();
+
 app.use(
 	json(),
 	cors({
-		origin: 'http://localhost:5173', // Replace with your frontend URL
-		credentials: true,              // Allow cookies to be sent
+		origin: "http://localhost:5173", // replace with your frontend url
+		credentials: true, // allow cookies to be sent
 	}),
 	session({
 		name: "sid",
@@ -29,15 +25,15 @@ app.use(
 	}),
 );
 
-const handleAuthCheck = (req, res, next) => {
+const checkAuth = (req, res, next) => {
 	if (!req.session.uid) {
 		return res.status(401).end();
 	}
 	next();
 };
 
-const handleAdminGuard = (req, res, next) => {
-	handleAuthCheck(req, res, () => {
+const checkAdminAuth = (req, res, next) => {
+	checkAuth(req, res, () => {
 		if (!req.session.admin) {
 			return res.status(403).end();
 		}
@@ -52,13 +48,13 @@ app.post("/login", async (req, res) => {
 	if (isAnyMissing(username, password)) {
 		return res.status(400).end();
 	}
-	const user = await User.findOne(
-		{ username, password },
-		"-__v -password -favourites",
-	)
+	const user = await User.findOne({ username }, "-__v -favourites")
 		.lean()
 		.exec();
 	if (!user) {
+		return res.status(401).end();
+	}
+	if (!(await bcrypt.compare(password, user.password))) {
 		return res.status(401).end();
 	}
 	req.session.uid = user._id;
@@ -67,12 +63,12 @@ app.post("/login", async (req, res) => {
 	return res.status(200).json(user);
 });
 
-app.post("/logout", handleAuthCheck, (req, res) => {
+app.post("/logout", checkAuth, (req, res) => {
 	req.session.destroy();
 	return res.status(200).end();
 });
 
-app.put("/username", handleAuthCheck, async (req, res) => {
+app.put("/username", checkAuth, async (req, res) => {
 	const { username } = req.body;
 	if (isAnyMissing(username)) {
 		return res.status(400).end();
@@ -83,14 +79,11 @@ app.put("/username", handleAuthCheck, async (req, res) => {
 });
 
 app.get("/events", async (_req, res) => {
-	// const events = await Event.find({}, "-__v")
-	// 	.lean()
-	// 	.populate("location", "-__v");
 	const events = await Event.find({}, "-__v").lean().exec();
 	return res.status(200).json(events || []);
 });
 
-app.post("/events", handleAdminGuard, async (req, res) => {
+app.post("/events", checkAdminAuth, async (req, res) => {
 	const { title, predate, progtime, desc, agelimit, price, presenterorg, lid } =
 		req.body;
 	if (
@@ -127,7 +120,7 @@ app.post("/events", handleAdminGuard, async (req, res) => {
 	return res.status(201).end();
 });
 
-app.put("/events/:id", handleAdminGuard, async (req, res) => {
+app.put("/events/:id", checkAdminAuth, async (req, res) => {
 	const { title, predate, progtime, desc, agelimit, price, presenterorg, lid } =
 		req.body;
 	if (
@@ -169,7 +162,7 @@ app.put("/events/:id", handleAdminGuard, async (req, res) => {
 	return res.status(200).end();
 });
 
-app.delete("/events/:id", handleAdminGuard, async (req, res) => {
+app.delete("/events/:id", checkAdminAuth, async (req, res) => {
 	if (!mongoose.isValidObjectId(req.params.id)) {
 		return res.status(400).end();
 	}
@@ -180,7 +173,7 @@ app.delete("/events/:id", handleAdminGuard, async (req, res) => {
 	return res.status(200).end();
 });
 
-app.get("/users", handleAdminGuard, async (_req, res) => {
+app.get("/users", checkAdminAuth, async (_req, res) => {
 	const users = await User.find({}, "-__v").lean().exec();
 	return res.status(200).json(users || []);
 });
@@ -194,11 +187,12 @@ app.post("/users", async (req, res) => {
 	if (user) {
 		return res.status(409).end();
 	}
-	await User.create({ username, password, admin: admin || false });
+	const _password = await bcrypt.hash(password, 10);
+	await User.create({ username, password: _password, admin: admin || false });
 	return res.status(201).end();
 });
 
-app.put("/users/:id", handleAdminGuard, async (req, res) => {
+app.put("/users/:id", checkAdminAuth, async (req, res) => {
 	const { username, password, admin } = req.body;
 	if (
 		isAnyMissing(username, password, admin) ||
@@ -206,8 +200,8 @@ app.put("/users/:id", handleAdminGuard, async (req, res) => {
 	) {
 		return res.status(400).end();
 	}
-	const existingUser = await User.findOne({ username }).exec();
-	if (existingUser && existingUser._id.toString() !== req.params.id) {
+	const _user = await User.exists({ username }).exec();
+	if (_user && _user._id !== req.params.id) {
 		return res.status(409).end();
 	}
 	const user = await User.findByIdAndUpdate(
@@ -221,7 +215,7 @@ app.put("/users/:id", handleAdminGuard, async (req, res) => {
 	return res.status(200).end();
 });
 
-app.delete("/users/:id", handleAdminGuard, async (req, res) => {
+app.delete("/users/:id", checkAdminAuth, async (req, res) => {
 	if (!mongoose.isValidObjectId(req.params.id)) {
 		return res.status(400).end();
 	}
@@ -235,18 +229,22 @@ app.delete("/users/:id", handleAdminGuard, async (req, res) => {
 	return res.status(200).end();
 });
 
-app.get("/locations", handleAuthCheck, async (req, res) => {
+app.get("/locations", checkAuth, async (req, res) => {
 	const locations = await Location.find({}, "-__v")
 		.lean()
 		.populate("numevents")
 		.populate("numcomments")
 		.exec();
-
-	const user = await User.findById(req.session.uid).populate("favourites")
-	const favouritesIds = user.favourites.map(loc => loc.id);
-	const locations_favcheck = locations.map(loc=>{return {...loc, isFav: favouritesIds.includes(loc.id)}})
-
-	return res.status(200).json(locations_favcheck || []);
+	const { favourites } = await User.findById(req.session.uid)
+		.lean()
+		.populate("favourites")
+		.exec();
+	return res.status(200).json(
+		locations.map((location) => ({
+			...location,
+			isFav: favourites.includes(location.id),
+		})),
+	);
 });
 
 // app.get("/locations/:id", async (req, res) => {
@@ -265,29 +263,23 @@ app.get("/locations", handleAuthCheck, async (req, res) => {
 // });
 
 app.get("/locations/:name", async (req, res) => {
-	const reqname = req.params.name.replace(/-+/g, " ");
-	const location = await Location.findOne({ name: reqname }, "-__v")
-		.lean()
-		.exec();
+	const name = req.params.name.replace(/-+/g, " ");
+	const location = await Location.findOne({ name }, "-__v").lean().exec();
 	if (!location) {
 		return res.status(404).end();
 	}
 	const [events, comments] = await Promise.all([
-		Event
-			.find({ location: location._id }, "-__v -location")
-			.lean()
-			.exec(),
-		Comment
-			.find({ location: location._id }, "-__v -location")
+		Event.find({ location: location._id }, "-__v -location").lean().exec(),
+		Comment.find({ location: location._id }, "-__v -location")
 			.lean()
 			.populate("user", "username")
-			.sort({created: -1})
+			.sort({ created: -1 })
 			.exec(),
 	]);
 	return res.status(200).json({ ...location, events, comments });
 });
 
-app.post("/comments", handleAuthCheck, async (req, res) => {
+app.post("/comments", checkAuth, async (req, res) => {
 	const { lid, text } = req.body;
 	if (isAnyMissing(text) || !mongoose.isValidObjectId(lid)) {
 		return res.status(400).end();
@@ -304,18 +296,19 @@ app.post("/comments", handleAuthCheck, async (req, res) => {
 	return res.status(201).end();
 });
 
-app.get("/favourites", handleAuthCheck, async (req, res) => {
+app.get("/favourites", checkAuth, async (req, res) => {
 	const { favourites } = await User.findById(req.session.uid)
 		.lean()
 		.populate({
-			path: "favourites", 
-			populate:{ path: "numevents" }
+			path: "favourites",
+			select: "-__v",
+			populate: { path: "numevents" },
 		})
 		.exec();
 	return res.status(200).json(favourites || []);
 });
 
-app.post("/favourites", handleAuthCheck, async (req, res) => {
+app.post("/favourites", checkAuth, async (req, res) => {
 	if (!mongoose.isValidObjectId(req.body.id)) {
 		return res.status(400).end();
 	}
@@ -329,7 +322,7 @@ app.post("/favourites", handleAuthCheck, async (req, res) => {
 	return res.status(201).end();
 });
 
-app.delete("/favourites/:id", handleAuthCheck, async (req, res) => {
+app.delete("/favourites/:id", checkAuth, async (req, res) => {
 	if (!mongoose.isValidObjectId(req.params.id)) {
 		return res.status(400).end();
 	}
