@@ -250,28 +250,13 @@ app.get("/locations", checkAuth, async (req, res) => {
 	);
 });
 
-// app.get("/locations/:id", async (req, res) => {
-// 	if (!mongoose.isValidObjectId(req.params.id)) {
-// 		return res.status(400).end();
-// 	}
-// 	const location = await Location.findById(req.params.id, "-__v").lean().exec();
-// 	if (!location) {
-// 		return res.status(404).end();
-// 	}
-// 	const [events, comments] = await Promise.all([
-// 		Event.find({ location: location._id }, "-__v -location").lean().exec(),
-// 		Comment.find({ location: location._id }, "-__v -location").lean().exec(),
-// 	]);
-// 	return res.status(200).json({ ...location, events, comments });
-// });
-
 app.get("/locations/:name", async (req, res) => {
 	const name = req.params.name.replace(/-+/g, " ");
 	const location = await Location.findOne({ name }, "-__v").lean().exec();
 	if (!location) {
 		return res.status(404).end();
 	}
-	const [events, comments] = await Promise.all([
+	const [comments] = await Promise.all([
 		Comment.find({ location: location._id }, "-__v -location")
 			.lean()
 			.populate("user", "username")
