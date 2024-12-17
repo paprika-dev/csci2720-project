@@ -3,9 +3,11 @@ import express, { json } from "express";
 import session from "express-session";
 import mongoose from "mongoose";
 import bcrypt from "bcrypt";
+import dotenv from "dotenv";
 
 import { User, Event, Comment, Location } from "./models.js";
 
+dotenv.config();
 const { PORT, MONGO_URI, SECRET } = process.env;
 
 const app = express();
@@ -200,13 +202,14 @@ app.put("/users/:id", checkAdminAuth, async (req, res) => {
 	) {
 		return res.status(400).end();
 	}
-	const _user = await User.exists({ username }).exec();
-	if (_user && _user._id !== req.params.id) {
+	const _user = await User.findOne({ username }).exec();
+	if (_user && _user._id.toString() !== req.params.id) {
 		return res.status(409).end();
 	}
+	const _password = await bcrypt.hash(password, 10);
 	const user = await User.findByIdAndUpdate(
 		req.params.id,
-		{ username, password, admin },
+		{ username, password: _password, admin },
 		{ new: true },
 	).exec();
 	if (!user) {
