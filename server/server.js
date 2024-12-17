@@ -8,6 +8,7 @@ import dotenv from "dotenv";
 import { User, Event, Comment, Location } from "./models.js";
 
 dotenv.config();
+
 const { PORT, MONGO_URI, SECRET } = process.env;
 
 const app = express();
@@ -243,10 +244,10 @@ app.get("/locations", checkAuth, async (req, res) => {
 		.populate("favourites")
 		.exec();
 	return res.status(200).json(
-		locations.map((location) => ({
-			...location,
-			isFav: favourites.includes(location.id),
-		})),
+		locations.map((location) => {
+			const isFav = !!favourites.find((fav) => fav.id === location.id);
+			return { ...location, isFav };
+		}),
 	);
 });
 
@@ -256,13 +257,14 @@ app.get("/locations/:name", async (req, res) => {
 	if (!location) {
 		return res.status(404).end();
 	}
-	const [comments] = await Promise.all([
-		Comment.find({ location: location._id }, "-__v -location")
-			.lean()
-			.populate("user", "username")
-			.sort({ created: -1 })
-			.exec(),
-	]);
+	const comments = await Comment.find(
+		{ location: location._id },
+		"-__v -location",
+	)
+		.lean()
+		.populate("user", "username")
+		.sort({ created: -1 })
+		.exec();
 	return res.status(200).json({ ...location, comments });
 });
 
