@@ -27,9 +27,9 @@ export const User = mongoose.model("User", UserSchema);
 
 const EventSchema = new mongoose.Schema({
 	id: {
-	  type: String,
-	  required: true,
-	  unique: true,
+		type: String,
+		required: true,
+		unique: true,
 	},
 	title: {
 		type: String,
@@ -53,15 +53,11 @@ const EventSchema = new mongoose.Schema({
 	presenterorg: {
 		type: String,
 	},
-	lid: {
-		type: String,
+	location: {
+		type: mongoose.Schema.Types.ObjectId,
+		ref: "Location",
 		required: true,
-	}
-	// location: {
-	// 	type: mongoose.Schema.Types.ObjectId,
-	// 	ref: "Location",
-	// 	required: true,
-	// },
+	},
 });
 
 export const Event = mongoose.model("Event", EventSchema);

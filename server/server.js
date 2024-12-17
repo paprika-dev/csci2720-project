@@ -104,13 +104,13 @@ app.post("/events", checkAdminAuth, async (req, res) => {
 		return res.status(400).end();
 	}
 	const location = await Location.exists({ id: lid }).exec();
-	const lastEvent = await Event.findOne().sort({ id: -1 }).lean().exec();
-	const newId = lastEvent ? lastEvent.id + 1 : 1;
 	if (!location) {
 		return res.status(400).end();
 	}
+	const lastEvent = await Event.findOne().sort({ id: -1 }).lean().exec();
+	const id = lastEvent ? lastEvent.id + 1 : 1;
 	await Event.create({
-		id: newId,
+		id,
 		title,
 		predate,
 		progtime,
@@ -118,7 +118,7 @@ app.post("/events", checkAdminAuth, async (req, res) => {
 		agelimit,
 		price,
 		presenterorg,
-		lid,
+		location: location._id,
 	});
 	return res.status(201).end();
 });
