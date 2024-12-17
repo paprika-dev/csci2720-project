@@ -60,69 +60,77 @@ function MyRoutes() {
     <AnimatePresence mode='wait'>
       <Routes location={location} key={location.pathname}>
         <Route path="/" element={
-          // <PageTransition>
+          <PageTransition>
             <Home userInfo={userInfo} setUserInfo={setUserInfo}/>
-          // </PageTransition>
+          </PageTransition>
         }/>
         <Route path='/login' element = {
           <PublicRoute>
-            <Login setUserInfo={setUserInfo}/> 
+            <PageTransition>
+              <Login setUserInfo={setUserInfo}/>        
+            </PageTransition>
           </PublicRoute>
         }/>
         <Route path='/register' element={
           <PublicRoute>
-            {/* <PageTransition> */}
+            <PageTransition>
               <Register/>
-            {/* </PageTransition> */}
+            </PageTransition>
           </PublicRoute>
         }/>
         <Route path="/events" element={
           <ProtectedRoute>
-            {/* <PageTransition> */}
+            <PageTransition>
               <Events />
-            {/* </PageTransition> */}
+            </PageTransition>
           </ProtectedRoute>
         } />
         <Route path="/locations" element={
           <ProtectedRoute>
-              {/* <PageTransition> */}
+              <PageTransition>
                 <Locations />
-              {/* </PageTransition> */}
+              </PageTransition>
           </ProtectedRoute>
         } />
         <Route path="/locations/:locName" element={
           <ProtectedRoute>
-            {/* <PageTransition> */}
+            <PageTransition>
               <SingleLocation />
-            {/* </PageTransition> */}
+            </PageTransition>
           </ProtectedRoute>
         } />
         <Route path="/favourites" element={
           <ProtectedRoute>
-            {/* <PageTransition> */}
+            <PageTransition>
               <Favourites />
-            {/* </PageTransition> */}
+            </PageTransition>
           </ProtectedRoute>
         } />
         <Route path="/map" element={
           <ProtectedRoute>
-            {/* <PageTransition> */}
+            <PageTransition>
               <LocationMap />
-            {/* </PageTransition> */}
+            </PageTransition>
           </ProtectedRoute>
         } />
         <Route path="/admin/users" element={
           <AdminRoute>
-            <AdminUser />
+            <PageTransition>
+              <AdminUser />
+            </PageTransition>
           </AdminRoute>
         } />
         <Route path="/admin/events" element={
           <AdminRoute>
-            <AdminEvent />
+            <PageTransition>
+              <AdminEvent />
+            </PageTransition>
           </AdminRoute>
         } />
         <Route path="*" element={
-          <NoMatch />
+          <PageTransition>
+            <NoMatch />
+          </PageTransition>
         } />
       </Routes>
     </AnimatePresence>

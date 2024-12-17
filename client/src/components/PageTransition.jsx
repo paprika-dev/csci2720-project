@@ -2,22 +2,31 @@ import React from 'react';
 import { motion } from "motion/react"
 import './PageTransition.css'
 
-const curtainVariants = {
-    open:   { scaleY: 0, transition: {duration: 1.2, ease:[0.32,1,0.36,0.82]} },
-    closed: { scaleY: 1, transition: {duration: 1.2, ease:[0.32,1,0.36,0.82]} }
+const transitionVariants = {
+    fadein: { 
+        opacity: 0, 
+    },
+    inview: { 
+        opacity: 1, 
+        transition: {duration: 0.8, ease: [0.2, 0.24, 0.3, 1] } 
+    },
+    fadeout: { 
+        opacity: 0, 
+        transition: {duration: 0.2, ease: [0.39, 0.24, 0.3, 1] } 
+    },
 }
 
 export const PageTransition = ({ children }) => {
     return (
         <>
-        {children}
-        <motion.div 
-            className="curtain d-flex justify-content-center"
-            initial="closed"
-            animate="open"
-            exit="closed"
-            variants={curtainVariants}
+        <motion.div
+        initial="fadein"
+        animate="inview"
+        exit="fadeout"
+        variants={transitionVariants}
+        className='page-wrapper'
         >
+            {children}
         </motion.div>
         </>
     )

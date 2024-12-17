@@ -4,6 +4,6 @@
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: linear-gradient(180deg, #93a5cf 0%, #efebe4 100%);
+    background: linear-gradient(90deg, #93a5cf 0%, #efebe4 100%);
     transform-origin: top;
 }
