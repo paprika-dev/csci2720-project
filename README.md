@@ -56,7 +56,7 @@ Run the following commands at the root directory (csci2720-project)
 The client will be running at `http://localhost:5173` and the server will be running at `http://localhost:8080`.
 
 ### (Optional)
-You can run the following commands if you want to .
+You can run the following commands if you want to perform individual actions.
 - `npm run install_client`
 - `npm run install_server`
 - `npm run import_dataset`
