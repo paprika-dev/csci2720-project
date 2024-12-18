@@ -1,3 +1,9 @@
+// Group 20
+// LIN Yu Hsiang           1155172258
+// CHAN Yiu Cheung         1155193060
+// CHENG Hing Wai Kristian 1155176902
+// CHENG Kwan Wai          1155157943
+
 import React, { useState, useEffect, useRef } from "react";
 import { APIProvider, useMapsLibrary } from "@vis.gl/react-google-maps";
 import { getGeocode, getLatLng } from "use-places-autocomplete";

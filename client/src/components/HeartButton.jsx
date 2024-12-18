@@ -1,3 +1,9 @@
+// Group 20
+// LIN Yu Hsiang           1155172258
+// CHAN Yiu Cheung         1155193060
+// CHENG Hing Wai Kristian 1155176902
+// CHENG Kwan Wai          1155157943
+
 import heartFilledSVG from '../assets/heart-filled.svg'
 import heartEmptySVG from '../assets/heart-empty.svg'
 import { useState } from 'react'
