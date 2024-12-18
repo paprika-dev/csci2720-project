@@ -40,6 +40,9 @@ csci2720-project
     ├── .env
     ├── package.json
     └── ...
+└── package.json
+└── README.md
+└── ...
 ```
 
 ## 2. Google Maps API
