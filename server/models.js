@@ -53,6 +53,9 @@ const EventSchema = new mongoose.Schema({
 	presenterorg: {
 		type: String,
 	},
+	lid: {
+		type: String,
+	},
 	location: {
 		type: mongoose.Schema.Types.ObjectId,
 		ref: "Location",

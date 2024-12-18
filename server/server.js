@@ -118,6 +118,7 @@ app.post("/events", checkAdminAuth, async (req, res) => {
 		agelimit,
 		price,
 		presenterorg,
+		lid,
 		location: location._id,
 	});
 	return res.status(201).end();
@@ -156,6 +157,7 @@ app.put("/events/:id", checkAdminAuth, async (req, res) => {
 			price,
 			presenterorg,
 			lid,
+			location: location._id,
 		},
 		{ new: true },
 	).exec();
