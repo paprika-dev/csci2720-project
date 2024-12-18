@@ -62,6 +62,8 @@ Run the following commands at the root directory (csci2720-project)
 - step4: `npm run start` to start the app. This command will import the dataset to database `csci2720-project-group20`, and start both client and server. 
 
 The client will be running at `http://localhost:5173` and the server will be running at `http://localhost:8080`.
+You can login as admin with username `Admin` and password `admin`.
+You can login as user with username `Morty` and password `1234`, or you can register a new account.
 
 ### (Optional)
 You can run the following commands if you want to perform individual actions.
