@@ -46,6 +46,8 @@ Enable the following Google Maps APIs:
 - Places API
 - Geocoding API
 
+You will need a Maps Platform API Key and a map ID.
+
 ## 3. Start the Application
 Run the following commands at the root directory (csci2720-project)
 - step1: `npm install` to install dependencies (at root)
