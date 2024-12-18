@@ -45,6 +45,16 @@ export const EventGrid = ({ data }) => {
     const generateLocURL = (name) => {
         if (!name) return "/locations/unknown"; // Handle cases where name is null or undefined
         return "/locations/" + name.replace(/\s+/g, "-");
+    }; 
+
+ const formatDescription = (description) => {
+        if (!description) return "-";
+        return description.split("\n").map((line, index) => (
+            <span key={index}>
+                {line}
+                <br />
+            </span>
+        ));
     };
 
     return (
@@ -78,7 +88,7 @@ export const EventGrid = ({ data }) => {
                                     <strong>Presenter:</strong> {event.presenterorg}<br />
                                     <strong>Price:</strong> {event.price || "Free"}<br />
                                     <strong>Agelimit:</strong> {event.agelimit || "-"}<br />
-                                    <strong>Description:</strong> {event.desc || "-"}<br />
+                                    <strong>Description:</strong> {formatDescription(event.desc) || "-"}<br />
                                     <strong>Location:</strong>
                                     <Link to={generateLocURL(getLocationName(event.lid))}>
                                         {getLocationName(event.lid)}
