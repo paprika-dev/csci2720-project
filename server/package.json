@@ -8,8 +8,7 @@
     "import": "dotenvx run -- node datasets/import.js",
     "import:clear": "dotenvx run -- node datasets/import.js --clear",
     "start": "dotenvx run -- node server.js",
-    "start:watch": "dotenvx run -- node --watch server.js",
-    "test": "dotenvx run -- nodemon server.js"
+    "start:watch": "dotenvx run -- node --watch server.js"
   },
   "author": "",
   "license": "ISC",
@@ -27,7 +26,6 @@
     "@types/bcrypt": "^5.0.2",
     "@types/cors": "^2.8.17",
     "@types/express": "^5.0.0",
-    "@types/express-session": "^1.18.1",
-    "nodemon": "^3.1.9"
+    "@types/express-session": "^1.18.1"
   }
 }

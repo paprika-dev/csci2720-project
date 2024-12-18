@@ -5,9 +5,13 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "concurrently \"cd client && npm run dev\" \"cd server && npm run start\" ",
-    "dev": "concurrently \"cd client && npm run dev\" \"cd server && npm run dev\" ",
-    "download_pkgs": "concurrently \"cd client && npm install\" \"cd server && npm install\" "
+    "install_client": "cd client && npm install",
+    "install_server": "cd server && npm install",
+    "import_dataset": "cd server && npm run import:clear",
+    "start_client": "cd client && npm run dev",
+    "start_server": "cd server && npm run start",
+    "download_pkgs": "concurrently \"npm:install_*\" ",
+    "start": "concurrently \"npm:import_dataset\" \"npm:start_*\" "
   },
   "author": "",
   "license": "ISC",
